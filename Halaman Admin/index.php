@@ -1,1 +1,0 @@
-<?php header('Location: dist/index.php?ke=Dashboard'); ?>
