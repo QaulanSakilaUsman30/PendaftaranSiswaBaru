@@ -1,14 +1,14 @@
 <div class="page-title">
     <div class="row">
         <div class="col-12 col-md-6 order-md-1 order-last">
-            <h3>Data Pengguna</h3>
+            <h3>Data Admin</h3>
         </div>
         <div class="col-12 col-md-6 order-md-2 order-first">
             <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="index.php?ke=dashboard">Dashboard</a></li>
-                    <li class="breadcrumb-item " aria-current="page">Data Pengguna</li>
-                    <li class="breadcrumb-item active" aria-current="page">Detail Data Pengguna</li>
+                    <li class="breadcrumb-item " aria-current="page">Data Admin</li>
+                    <li class="breadcrumb-item active" aria-current="page">Detail Data Admin</li>
                 </ol>
             </nav>
         </div>
@@ -25,7 +25,7 @@
                 </div>
                 <div class="card-body">
 
-                    <div class="section-title mt-0 ml-4">Detail Data Pengguna</div>
+                    <div class="section-title mt-0 ml-4">Detail Data Admin</div>
                     <?php
                         // Bagian untuk menampilkan detail data siswa dalam bentuk form tabel
                         if (isset($_GET['id'])) {
@@ -40,11 +40,11 @@
                             <table class="table table-bordered">
                                 <tbody>
                                     <tr>
-                                        <th>Nama Pengguna</th>
+                                        <th>Nama Admin</th>
                                         <td><?php echo $data_admin['NAMA_ADMIN']; ?></td>
                                     </tr>
                                     <tr>
-                                        <th>TELEPON</th>
+                                        <th>Telepon</th>
                                         <td><?php echo $data_admin['TELEPON']; ?></td>
                                     </tr>
                                     <tr>

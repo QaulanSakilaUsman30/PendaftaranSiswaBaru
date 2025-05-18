@@ -21,7 +21,7 @@ if (!empty($id_siswa)) {
 
         if (mysqli_query($conn, $update_query)) {
             // Redirect ke halaman siswaditerima setelah update berhasil
-            echo "<script>alert('Status siswa berhasil diubah menjadi DIVERIFIKASI.'); window.location.href='index.php?ke=datasiswa';</script>";
+            echo "<script>alert('Status siswa berhasil diubah menjadi DIVERIFIKASI.'); window.location.href='index.php?ke=siswaditerima';</script>";
             exit;
         } else {
             echo "Error saat mengupdate status: " . mysqli_error($conn);

@@ -16,6 +16,11 @@ function clean_input($data) {
     global $conn;
     return mysqli_real_escape_string($conn, trim($data));
 }
+// Ambil status verifikasi siswa dari database
+$query_status = "SELECT STATUS FROM datasiswa WHERE ID_SISWA = '$ID_SISWA_LOGGED_IN'";
+$result_status = mysqli_query($conn, $query_status);
+$row_status = mysqli_fetch_assoc($result_status);
+$status_verifikasi = $row_status['STATUS'];
 
 // Proses form saat disubmit
 if (isset($_POST['tambahdata'])) {
@@ -89,7 +94,7 @@ if (isset($_POST['tambahdata'])) {
 
 <div class="content-wrapper container">
     <div class="page-heading">
-        <h3>SELAMAT DATANG DI WEBSITE KAMI <?php echo $_SESSION['namaSiswa'];?></h3>
+        <h3>Selamat Datang di Website Kami <?php echo $_SESSION['namaSiswa'];?></h3>
     </div>
     <div class="page-content" style="margin-bottom:32%;">
         <section class="row">
@@ -102,8 +107,11 @@ if (isset($_POST['tambahdata'])) {
                                     <div class="col-md-12">
                                         <div class="accordion-container" id="accordion-container">
                                             <h2 class="accordion-title">INFORMASI PENGUMUMAN SISWA</h2>
-                                            <p class="accordion-description">
-                                                Klik pada setiap item di bawah ini untuk melengkapi data- data berikut :<br>Jika ada yang ditanyakan silahkan hubungi admin sekolah
+                                                <?php
+                                            // Tampilkan informasi berdasarkan status verifikasi
+                                            if ($status_verifikasi == 'BELUM DIVERIFIKASI') {
+                                                echo '<p class="accordion-description">
+                                                Klik pada setiap item di bawah ini untuk melengkapi data- data berikut :
                                                 <ul><h6>1. Data - Data Orang Tua/ Wali </h6></ul>
                                                 <ul><h6>2. Data Siswa (Dokumen)</h6>
                                                 <li style="margin-left:40px;">Akta Kelahiran</li>
@@ -111,8 +119,84 @@ if (isset($_POST['tambahdata'])) {
                                                 <li style="margin-left:40px;">Ijazah (bila sudah ada)</li>
                                                 <li style="margin-left:40px;">Surat Keterangan Lulus (SKL)</li>
                                                 <li style="margin-left:40px;">Buku PIP (bagi yang memiliki)</li>
-                                                </ul> 
-                                            </p>
+                                                </ul>
+                                                </p>
+                                                <p class="accordion-description">
+                                                Kami mohon agar semua data dan dokumen yang diperlukan dapat dikumpulkan paling lambat pada: 
+                                                <br>Tanggal Batas Pengumpulan: [Tanggal Batas]
+                                                <br>Jika ada pertanyaan atau informasi lebih lanjut, silakan hubungi kami melalui WhatsApp di <a href="https://wa.me/081384367417" target="_blank">081384367417</a>. Kami siap membantu Anda.
+                                                </p>';
+                                            } elseif ($status_verifikasi == 'DITOLAK') {
+                                                echo '<p class="accordion-description" style="text-align:justify;">
+                                                Kami menyesal untuk menginformasikan bahwa pendaftaran siswa Anda telah Ditolak. Kami mohon agar Anda segera melengkapi dokumen yang diperlukan dan mengirimkannya kembali kepada kami. Jika ada yang ditanyakan silahkan hubungi admin sekolah <a href="https://wa.me/081384367417" target="_blank">Hubungi Kami di WhatsApp</a>
+                                                </p>';
+                                            } elseif ($status_verifikasi == 'DIVERIFIKASI') {
+                                                echo '<div class="accordion-description" style=" font-size: 20px; line-height: 1.5;">
+                                                <p>
+                                                    Kami menginformasikan bahwa pendaftaran siswa Anda telah <strong>Diverifikasi</strong>. Selamat! Anda resmi terdaftar di <strong>SMP Negeri 6 Kota Tidore</strong>. Berikut adalah informasi penting yang perlu Anda ketahui:
+                                                </p>
+                                                
+                                                <h6 style="font-size: 20px; text-align:center;">1. Perlengkapan Sekolah</h6>
+                                                <p style="text-align:center;">Rincian Perlengkapan Sekolah:</p>
+                                                <table style="margin: 0 auto; border-collapse: collapse; width: 50%;">
+                                                    <thead>
+                                                        <tr style="background-color:grey; color:white;">
+                                                            <th style="border: 1px solid #000; padding: 10px;">Item</th>
+                                                            <th style="border: 1px solid #000; padding: 10px;">Harga</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr style="color:black;">
+                                                            <td style="border: 1px solid #000; padding: 10px;">Papan Nama</td>
+                                                            <td style="border: 1px solid #000; padding: 10px;">100.000 IDR</td>
+                                                        </tr>
+                                                        <tr style="color:black;">
+                                                            <td style="border: 1px solid #000; padding: 10px;">Rompi</td>
+                                                            <td style="border: 1px solid #000; padding: 10px;">150.000 IDR</td>
+                                                        </tr>
+                                                        <tr style="color:black;">
+                                                            <td style="border: 1px solid #000; padding: 10px;">Raport</td>
+                                                            <td style="border: 1px solid #000; padding: 10px;">50.000 IDR</td>
+                                                        </tr>
+                                                        <tr style="color:black;">
+                                                            <td style="border: 1px solid #000; padding: 10px;">Lokasi</td>
+                                                            <td style="border: 1px solid #000; padding: 10px;">100.000 IDR</td>
+                                                        </tr>
+                                                        <tr style="color:black;">
+                                                            <td style="border: 1px solid #000; padding: 10px;">Baju Jumat</td>
+                                                            <td style="border: 1px solid #000; padding: 10px;">150.000 IDR</td>
+                                                        </tr>
+                                                        <tr style="color:black;">
+                                                            <td style="border: 1px solid #000; padding: 10px;">Training</td>
+                                                            <td style="border: 1px solid #000; padding: 10px;">150.000 IDR</td>
+                                                        </tr>
+                                                        <tr style="background-color:red; color:white;">
+                                                            <td style="border: 1px solid #000; padding: 10px;">Total</td>
+                                                            <td style="border: 1px solid #000; padding: 10px;">700.000 IDR</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+
+                                                <p class="mt-4 mb-4" style="text-align:center;">
+                                                Silahkan Lakukan Pembayaran Secara Tunai dengan datang ke sekolah atau melalui Nomor Rekening ini <strong>Nomor Rekening</strong> Mohon untuk mengirimkan bukti transfer ke nomor WhatsApp kami di <a href="https://wa.me/081384367417" target="_blank">081384367417</a> setelah melakukan pembayaran.
+                                                </p>
+                                                <h6 style="font-size:20px; text-align:center;">2. Kegiatan Selanjutnya</h6>
+                                                <p style="text-align:center;">
+                                                    Kami akan mengadakan kegiatan orientasi/MPLS bagi siswa baru yang akan dilaksanakan pada:
+                                                </p>
+                                                <p style="text-align:center;">
+                                                    <strong>Tanggal:</strong> [Tanggal Kegiatan]<br>
+                                                    <strong>Waktu:</strong> [Waktu Kegiatan]<br>
+                                                    <strong>Tempat:</strong> [Tempat Kegiatan]
+                                                </p>
+                                                <p style="text-align:center;">
+                                                    Kegiatan ini sangat penting untuk memperkenalkan siswa kepada lingkungan sekolah dan kegiatan belajar mengajar. Mohon agar siswa hadir tepat waktu.
+                                                </p>
+                                            </div>';
+
+                                            
+                                            }
+                                            ?>
 
                                             <div class="accordion-item accordion-item-blue">
                                                 <button class="accordion-header" aria-expanded="true"

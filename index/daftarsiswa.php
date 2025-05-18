@@ -63,7 +63,7 @@
          PENGHARGAAN_INTERNASIONAL = '$PENGHARGAAN_INTERNASIONAL',
          STATUS = '$status'");
      if ($query_siswa) {
-         header('location:index.php');
+         header('location:../Halaman Siswa/dist/Login.php');
      }else{
          echo"<p> Data Gagal Di Simpan";
      }

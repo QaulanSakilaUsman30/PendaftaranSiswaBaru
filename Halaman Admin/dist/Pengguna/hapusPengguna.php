@@ -13,7 +13,7 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
         exit();
     } else {
         // Jika terjadi kesalahan saat menghapus
-        echo "<p>Gagal menghapus data pengguna.</p>";
+        echo "<p>Gagal menghapus data Admin.</p>";
         echo "Error: " . mysqli_error($conn);
     }
 } else {

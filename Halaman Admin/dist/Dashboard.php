@@ -66,7 +66,7 @@
                                             $jumlah1   = mysqli_num_rows($query1);
                                             ?>
                                             <div class="col-md-8">
-                                                <h6 class="text-muted font-semibold">Total Pengguna</h6>
+                                                <h6 class="text-muted font-semibold">Total Admin</h6>
                                                 <h6 class="font-extrabold mb-0"><?php echo "$jumlah1" ?></h6>
                                             </div>
                                         </div>

@@ -75,7 +75,7 @@
                                             <ul id="navigation">                                                                  
                                                 <li class="active" ><a href="index.php">Home</a></li>
                                                 <li><a href="#tentang">Tentang Sekolah</a></li>
-                                                <li><a href="../Halaman Admin/dist/Login.php">Login Guru</a></li>
+                                                <li><a href="../Halaman Admin/dist/Login.php">Login Admin</a></li>
                                                 <!-- Button -->
                                                 <li class="button-header margin-left "><a href="../Halaman Siswa/dist/Login.php" class="btn">Login Siswa</a></li>
                                                 <li class="button-header"><a href="daftarsiswa.php" class="btn btn3">Daftar Siswa</a></li>

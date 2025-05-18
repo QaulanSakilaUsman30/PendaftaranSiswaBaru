@@ -35,13 +35,13 @@ $data = mysqli_query($conn, $query) or die(mysqli_error($conn));
     <div class="page-title">
         <div class="row">
             <div class="col-12 col-md-6 order-md-1 order-last">
-                <h3>Data Pengguna</h3>
+                <h3>Data Admin</h3>
             </div>
             <div class="col-12 col-md-6 order-md-2 order-first">
                 <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="index.php?ke=dashboard">Dashboard</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Data Pengguna</li>
+                        <li class="breadcrumb-item active" aria-current="page">Data Admin</li>
                     </ol>
                 </nav>
             </div>
@@ -53,7 +53,7 @@ $data = mysqli_query($conn, $query) or die(mysqli_error($conn));
                 <a href="index.php?ke=tambahPengguna" type="button" class="btn btn-primary daterange-btn icon-left btn-icon">
                     <svg style="margin-right:5px; color:gray;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                         <path fill="white" d="M416 208H272V64c0-17.7-14.3-32-32-32h-32c-17.7 0-32 14.3-32 32v144H32c-17.7 0-32 14.3-32 32v32c0 17.7 14.3 32 32 32h144v144c0 17.7 14.3 32 32 32h32c17.7 0 32-14.3 32-32V304h144c17.7 0 32-14.3 32-32v-32c0-17.7-14.3-32-32-32z"/>
-                    </svg>Tambah Data Pengguna 
+                    </svg>Tambah Data Admin 
                 </a>
             </div>
             <div class="card-body">
@@ -82,8 +82,8 @@ $data = mysqli_query($conn, $query) or die(mysqli_error($conn));
                             <thead>
                                 <tr>
                                     <th class="text-center"> No </th>
-                                    <th>Nama Pengguna</th>
-                                    <th>TELEPON</th>
+                                    <th>Nama Admin</th>
+                                    <th>Telepon</th>
                                     <th>Username</th>
                                     <th>Tanggal Buat</th>
                                     <th class="text-center">Action</th>
@@ -124,7 +124,7 @@ $data = mysqli_query($conn, $query) or die(mysqli_error($conn));
                                 <?php
                                     }
                                 } else {
-                                    echo '<tr><td colspan="6" class="text-center">Tidak ada data pengguna yang ditemukan.</td></tr>';
+                                    echo '<tr><td colspan="6" class="text-center">Tidak ada data admin yang ditemukan.</td></tr>';
                                 }
                                 ?>
                             </tbody>

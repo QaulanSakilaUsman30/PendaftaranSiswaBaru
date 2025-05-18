@@ -84,10 +84,13 @@ if (empty($_SESSION['sID_ADMIN'])) {
                                     <a href="index.php?ke=datasiswa">Data Siswa</a>
                                 </li>
                                 <li class="submenu-item <?php if ($currentPage == 'siswaditerima') echo 'active'; ?>">
-                                    <a href="index.php?ke=siswaditerima">Siswa Diterima</a>
+                                    <a href="index.php?ke=siswaditerima">Data Siswa Diterima</a>
                                 </li>
                                 <li class="submenu-item <?php if ($currentPage == 'pembayaran') echo 'active'; ?>">
-                                    <a href="index.php?ke=pembayaran">Pembayaran</a>
+                                    <a href="index.php?ke=pembayaran">Data Pembayaran</a>
+                                </li>
+                                <li class="submenu-item <?php if ($currentPage == 'pembayaran') echo 'active'; ?>">
+                                    <a href="index.php?ke=pengguna">Data Admin</a>
                                 </li>
                             </ul>
                         </li>
@@ -96,13 +99,6 @@ if (empty($_SESSION['sID_ADMIN'])) {
                             <a href="index.php?ke=laporan" class='sidebar-link'>
                             <i class="bi bi-file-earmark-break-fill"></i>
                                 <span>Laporan</span>
-                            </a>
-                        </li>
-
-                        <li class="sidebar-item <?php if ($currentPage == 'pengguna') echo 'active'; ?>">
-                            <a href="index.php?ke=pengguna" class='sidebar-link'>
-                                <i class="bi bi-person-fill"></i>
-                                <span>Pengguna</span>
                             </a>
                         </li>
 

@@ -1,14 +1,14 @@
 <div class="page-title">
     <div class="row">
         <div class="col-12 col-md-6 order-md-1 order-last">
-            <h3>Data Pengguna</h3>
+            <h3>Data Admin</h3>
         </div>
         <div class="col-12 col-md-6 order-md-2 order-first">
             <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="index.php?ke=dashboard">Dashboard</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Data Pengguna</li>
-                    <li class="breadcrumb-item active" aria-current="page">Tambah Data Pengguna</li>
+                    <li class="breadcrumb-item active" aria-current="page">Data Admin</li>
+                    <li class="breadcrumb-item active" aria-current="page">Tambah Data Admin</li>
                 </ol>
             </nav>
         </div>
@@ -30,56 +30,50 @@
                 <?php
                     include '../../koneksi.php'; // Pastikan koneksi dilakukan di atas
 
-                    // Cek apakah form disubmit
                     if (isset($_POST['tambahDataPengguna'])) {
-                        // Ambil dan sanitasi data dari form
-                        $nama_admin = mysqli_real_escape_string($conn, $_POST['NAMA_ADMIN']);
-                        $TELEPON = mysqli_real_escape_string($conn, $_POST['TELEPON']);
-                        $username = mysqli_real_escape_string($conn, $_POST['USERNAME']);
-                        $password = mysqli_real_escape_string($conn, $_POST['PASSWORD']); // Password tidak di-hash
-                        $gambar = $_FILES['GAMBAR']['name'];
-                        $tgl_buat = date('Y-m-d H:i:s');
+                    $nama_admin = mysqli_real_escape_string($conn, $_POST['NAMA_ADMIN']);
+                    $TELEPON = mysqli_real_escape_string($conn, $_POST['TELEPON']);
+                    $username = mysqli_real_escape_string($conn, $_POST['USERNAME']);
+                    $raw_password = $_POST['PASSWORD'];
+                    $password = md5($raw_password); // ← ubah hash ke MD5 di sini
+                    $gambar = $_FILES['GAMBAR']['name'];
+                    $tgl_buat = date('Y-m-d H:i:s');
 
-                        // Validasi file gambar
-                        $target_dir = "Pengguna/uploads/"; // Folder untuk menyimpan gambar
-                        $target_file = $target_dir . basename($gambar);
-                        $uploadOk = 1;
-                        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+                    $target_dir = "Pengguna/uploads/";
+                    $target_file = $target_dir . basename($gambar);
+                    $uploadOk = 1;
+                    $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
-                        // Cek ukuran file
-                        if ($_FILES['GAMBAR']['size'] > 25165824) {
-                            echo "Maaf, ukuran file terlalu besar.";
-                            $uploadOk = 0;
-                        }
-
-                        // Cek format file
-                        if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
-                            echo "Maaf, hanya file JPG, JPEG, & PNG yang diperbolehkan.";
-                            $uploadOk = 0;
-                        }
-
-                        // Jika semua validasi berhasil
-                        if ($uploadOk == 1) {
-                            // Pindahkan file ke folder tujuan
-                            if (move_uploaded_file($_FILES['GAMBAR']['tmp_name'], $target_file)) {
-                                // Query untuk menambah data pengguna (password disimpan tanpa hash)
-                                $sql = "INSERT INTO dataadmin (NAMA_ADMIN, TELEPON, USERNAME, PASSWORD, GAMBAR, TGL_BUAT) VALUES ('$nama_admin', '$TELEPON', '$username', '$password', '$gambar', '$tgl_buat')";
-
-                                if ($conn->query($sql) === TRUE) {
-                                    header('Location: index.php?ke=pengguna');
-                                    exit(); // Pastikan untuk menghentikan eksekusi setelah redirect
-                                } else {
-                                    echo "Error: " . $sql . "<br>" . $conn->error;
-                                }
-                            } else {
-                                echo "Maaf, terjadi kesalahan saat mengupload gambar.";
-                            }
-                        }
+                    if ($_FILES['GAMBAR']['size'] > 25165824) {
+                        echo "Maaf, ukuran file terlalu besar.";
+                        $uploadOk = 0;
                     }
 
-                    $conn->close();
+                    if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
+                        echo "Maaf, hanya file JPG, JPEG, & PNG yang diperbolehkan.";
+                        $uploadOk = 0;
+                    }
+
+                    if ($uploadOk == 1) {
+                        if (move_uploaded_file($_FILES['GAMBAR']['tmp_name'], $target_file)) {
+                            $sql = "INSERT INTO dataadmin (NAMA_ADMIN, TELEPON, USERNAME, PASSWORD, GAMBAR, TGL_BUAT)
+                                    VALUES ('$nama_admin', '$TELEPON', '$username', '$password', '$gambar', '$tgl_buat')";
+
+                            if ($conn->query($sql) === TRUE) {
+                                header('Location: index.php?ke=pengguna');
+                                exit();
+                            } else {
+                                echo "Error: " . $sql . "<br>" . $conn->error;
+                            }
+                        } else {
+                            echo "Maaf, terjadi kesalahan saat mengupload gambar.";
+                        }
+                    }
+                }
+
+
                     ?>
-                    <div class="section-title mt-0 ml-4">Tambah Data Pengguna</div>
+                    <div class="section-title mt-0 ml-4">Tambah Data Admin</div>
                     <form class="needs-validation" novalidate action="" method="POST" enctype="multipart/form-data">
                         <div class="modal-body">
                             <div class="form-group">
@@ -88,7 +82,7 @@
                                 <div class="valid-feedback"> Baguss! </div>
                             </div>
                             <div class="form-group">
-                                <label>TELEPON</label>
+                                <label>Telepon</label>
                                 <input type="TELEPON" class="form-control" name="TELEPON" required minlength="16">
                                 <div class="valid-feedback"> Baguss! </div>
                             </div>

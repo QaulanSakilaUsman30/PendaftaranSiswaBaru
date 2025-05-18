@@ -1,10 +1,10 @@
 <?php
 include '../../koneksi.php';
 
-// Ambil ID pengguna yang akan diubah dari parameter GET
+// Ambil ID Admin yang akan diubah dari parameter GET
 $id_pengguna = $_GET['id'];
 
-// Query untuk mengambil data pengguna berdasarkan ID
+// Query untuk mengambil data Admin berdasarkan ID
 $data = mysqli_query($conn, "SELECT `ID_ADMIN`, `NAMA_ADMIN`, `TELEPON`, `USERNAME`, `PASSWORD`, `GAMBAR` FROM `dataadmin` WHERE `ID_ADMIN`='$id_pengguna'") or die(mysqli_error($conn));
 $row = mysqli_fetch_assoc($data);
 
@@ -24,59 +24,63 @@ if (isset($_POST['ubahDataPengguna'])) {
         $target_file = $target_dir . basename($_FILES['GAMBAR_BARU']['name']);
         $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
-        // Validasi file gambar
         $check = getimagesize($_FILES['GAMBAR_BARU']['tmp_name']);
         if ($check === false) {
             echo "<script>alert('File yang diupload bukan gambar.');</script>";
             $upload_error = true;
         }
-        if ($_FILES['GAMBAR_BARU']['size'] > 2000000) { // Batas 2MB
+        if ($_FILES['GAMBAR_BARU']['size'] > 2000000) {
             echo "<script>alert('Ukuran file terlalu besar.');</script>";
             $upload_error = true;
         }
-        if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
+        if (!in_array($imageFileType, ['jpg', 'jpeg', 'png'])) {
             echo "<script>alert('Hanya file JPG, JPEG, dan PNG yang diperbolehkan.');</script>";
             $upload_error = true;
         }
 
         if (!$upload_error) {
-            // Buat direktori jika belum ada
             if (!is_dir($target_dir)) {
                 mkdir($target_dir, 0755, true);
             }
             if (move_uploaded_file($_FILES['GAMBAR_BARU']['tmp_name'], $target_file)) {
-                // Hapus gambar lama jika ada
                 if (!empty($gambar_lama) && file_exists($target_dir . $gambar_lama)) {
                     unlink($target_dir . $gambar_lama);
                 }
                 $gambar = basename($_FILES['GAMBAR_BARU']['name']);
             } else {
                 echo "<script>alert('Terjadi kesalahan saat mengupload gambar.');</script>";
-                $gambar = $gambar_lama; // Gunakan gambar lama jika upload gagal
+                $gambar = $gambar_lama;
             }
         } else {
-            $gambar = $gambar_lama; // Gunakan gambar lama jika ada error validasi
+            $gambar = $gambar_lama;
         }
     } else {
-        $gambar = $gambar_lama; // Gunakan gambar lama jika tidak ada gambar baru diupload
+        $gambar = $gambar_lama;
     }
 
-    // Query untuk mengupdate data pengguna
+    // Bangun query update
     $sql = "UPDATE `dataadmin` SET
                 `NAMA_ADMIN`='$nama_admin',
                 `TELEPON`='$TELEPON',
                 `USERNAME`='$username',
                 `GAMBAR`='$gambar'";
 
-    // Hanya update password jika ada nilai baru
     if (!empty($password_baru)) {
-        $sql .= ", `PASSWORD`='$password_baru'"; // PERHATIAN: Ini menyimpan password dalam teks biasa, sangat tidak aman!
+        $password_hashed = md5($password_baru); // Hash password baru dengan MD5
+        $sql .= ", `PASSWORD`='$password_hashed'";
     }
 
     $sql .= " WHERE `ID_ADMIN`='$id_pengguna'";
 
     if ($conn->query($sql) === TRUE) {
-        echo "<script>alert('Data pengguna berhasil diubah.'); window.location.href='index.php?ke=pengguna';</script>";
+        echo "<script>alert('Data Admin berhasil diubah.');</script>";
+
+        // Cek apakah yang diubah adalah akun yang sedang login
+        if ($id_pengguna == $_SESSION['sID_ADMIN']) {
+            echo "<script>window.location.href='Logout.php';</script>"; // Logout
+        } else {
+            echo "<script>window.location.href='index.php?ke=pengguna';</script>";
+        }
         exit();
     } else {
         echo "Error: " . $sql . "<br>" . $conn->error;
@@ -86,17 +90,18 @@ if (isset($_POST['ubahDataPengguna'])) {
 $conn->close();
 ?>
 
+
 <div class="page-title">
     <div class="row">
         <div class="col-12 col-md-6 order-md-1 order-last">
-            <h3>Data Pengguna</h3>
+            <h3>Data Admin</h3>
         </div>
         <div class="col-12 col-md-6 order-md-2 order-first">
             <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="index.php?ke=dashboard">Dashboard</a></li>
-                    <li class="breadcrumb-item"><a href="index.php?ke=pengguna">Data Pengguna</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Ubah Data Pengguna</li>
+                    <li class="breadcrumb-item"><a href="index.php?ke=pengguna">Data Admin</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Ubah Data Admin</li>
                 </ol>
             </nav>
         </div>
@@ -115,7 +120,7 @@ $conn->close();
                     </a>
                 </div>
                 <div class="card-body">
-                    <div class="section-title mt-0 ml-4">Ubah Data Pengguna</div>
+                    <div class="section-title mt-0 ml-4">Ubah Data Admin</div>
                     <form class="needs-validation" novalidate action="" method="POST" enctype="multipart/form-data">
                         <div class="modal-body">
                             <div class="form-group">
@@ -124,7 +129,7 @@ $conn->close();
                                 <div class="valid-feedback">Baguss!</div>
                             </div>
                             <div class="form-group">
-                                <label>TELEPON</label>
+                                <label>Telepon</label>
                                 <input type="TELEPON" class="form-control" name="TELEPON" required value="<?= htmlspecialchars($row['TELEPON']); ?>">
                                 <div class="valid-feedback">Baguss!</div>
                             </div>
@@ -150,7 +155,7 @@ $conn->close();
                             <div class="form-group">
                                 <label>Ubah Gambar (Optional)</label>
                                 <input type="file" class="form-control" name="GAMBAR_BARU" accept="image/jpg, image/jpeg, image/png">
-                                <small class="form-text text-muted">Pilih file gambar baru jika ingin mengubah gambar pengguna.</small>
+                                <small class="form-text text-muted">Pilih file gambar baru jika ingin mengubah gambar Admin.</small>
                             </div>
                             <br>
                             <div class="modal-footer bg-whitesmoke br">

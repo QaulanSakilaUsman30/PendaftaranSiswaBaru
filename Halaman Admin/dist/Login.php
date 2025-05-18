@@ -25,33 +25,33 @@
                     <h1 class="auth-title" >Log in Admin</h1>
                     <p class="auth-subtitle mb-5" style=" font-size: 20px">Silahkan isi Username dan Password untuk login</p>
                     <?php
-                        session_start();
-                        include '../../koneksi.php';
+                    session_start();
+                    include '../../koneksi.php';
 
-                        if (isset($_POST['loginData'])) {
-                            if (isset($_POST['USERNAME']) && isset($_POST['PASSWORD'])) {
-                                $USERNAME = $_POST['USERNAME']; // Baris 37
-                                $PASSWORD = $_POST['PASSWORD']; // Baris 38
+                    if (isset($_POST['loginData'])) {
+                        if (isset($_POST['USERNAME']) && isset($_POST['PASSWORD'])) {
+                            $USERNAME = $_POST['USERNAME'];
+                            $PASSWORD = md5($_POST['PASSWORD']);  // Hash password dengan MD5
 
-                                $query = mysqli_query($conn, "SELECT * FROM dataadmin WHERE USERNAME ='$USERNAME' AND PASSWORD = '$PASSWORD'");
+                            $query = mysqli_query($conn, "SELECT * FROM dataadmin WHERE USERNAME ='$USERNAME' AND PASSWORD = '$PASSWORD'");
 
-                                if (mysqli_num_rows($query) > 0) {
-                                    $userData = mysqli_fetch_array($query);
-                                    $_SESSION['sID_ADMIN'] = $userData['ID_ADMIN'];
-                                    $_SESSION['sNAMA_ADMIN'] = $userData['NAMA_ADMIN'];
-                                    $_SESSION['sGAMBAR_ADMIN'] = $userData['GAMBAR']; // Simpan nama gambar ke dalam sesi
+                            if (mysqli_num_rows($query) > 0) {
+                                $userData = mysqli_fetch_array($query);
+                                $_SESSION['sID_ADMIN'] = $userData['ID_ADMIN'];
+                                $_SESSION['sNAMA_ADMIN'] = $userData['NAMA_ADMIN'];
+                                $_SESSION['sGAMBAR_ADMIN'] = $userData['GAMBAR'];
 
-
-                                    header('location:index.php');
-                                    exit();
-                                } else {
-                                    echo "<p>Username dan password salah!</p>";
-                                }
+                                header('location:index.php');
+                                exit();
                             } else {
-                                echo "<p>Username dan password belum diisi!</p>";
+                                echo "<p>Username dan password salah!</p>";
                             }
+                        } else {
+                            echo "<p>Username dan password belum diisi!</p>";
                         }
-                        ?>
+                    }
+                    ?>
+
                     <form method="POST">
                         <label for="" class="mb-2"><b>Username</b></label>
                         <div class="form-group position-relative has-icon-left mb-4">
