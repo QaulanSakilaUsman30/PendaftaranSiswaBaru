@@ -176,8 +176,8 @@ $query_detail_ortu = mysqli_query($conn, "SELECT * FROM dataortu_wali WHERE ID_S
 $data_ortu_wali = mysqli_fetch_assoc($query_detail_ortu);
 
 
-// Menampilkan form dengan data yang ada
 ?>
+
 
 <div class="page-heading">
     <div class="page-title">
@@ -190,10 +190,45 @@ $data_ortu_wali = mysqli_fetch_assoc($query_detail_ortu);
                     <ol class="breadcrumb">
                         <li style="margin-right:15px;"><a href="index.php?ke=dashboard" class="btn icon icon-left btn-primary"><svg fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg>
                         Kembali</a></li>
-                        <li style="margin-right:15px;"><a href="Master Data\Siswa\cetak.php" class="btn icon icon-left btn-warning"><svg fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M128 0C92.7 0 64 28.7 64 64l0 96 64 0 0-96 226.7 0L384 93.3l0 66.7 64 0 0-66.7c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0L128 0zM384 352l0 32 0 64-256 0 0-64 0-16 0-16 256 0zm64 32l32 0c17.7 0 32-14.3 32-32l0-96c0-35.3-28.7-64-64-64L64 192c-35.3 0-64 28.7-64 64l0 96c0 17.7 14.3 32 32 32l32 0 0 64c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-64zM432 248a24 24 0 1 1 0 48 24 24 0 1 1 0-48z"/></svg>
-                        Cetak PDF</a></li>
-                        <li><a href="Master Data\Siswa\cetak_excel.php" class="btn icon icon-left btn-success"><svg fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M128 0C92.7 0 64 28.7 64 64l0 96 64 0 0-96 226.7 0L384 93.3l0 66.7 64 0 0-66.7c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0L128 0zM384 352l0 32 0 64-256 0 0-64 0-16 0-16 256 0zm64 32l32 0c17.7 0 32-14.3 32-32l0-96c0-35.3-28.7-64-64-64L64 192c-35.3 0-64 28.7-64 64l0 96c0 17.7 14.3 32 32 32l32 0 0 64c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-64zM432 248a24 24 0 1 1 0 48 24 24 0 1 1 0-48z"/></svg>
-                        Cetak EXCEL</a></li>
+                        <?php
+                        // Asumsikan $data_ortu_wali sudah diisi dari database
+                        // Cek apakah data wajib kosong
+                        function isDataOrtuKosong($data) {
+                            $required_keys = ['NAMA_AYAH', 'TEMPAT_LAHIR_AYAH', 'TGL_LAHIR_AYAH', 'PEKERJAAN_AYAH', 'ALAMAT_RUMAH_AYAH'];
+                            foreach ($required_keys as $key) {
+                                if (empty($data[$key])) {
+                                    return true;
+                                }
+                            }
+                            return false;
+                        }
+
+                        $ortu_kosong = isDataOrtuKosong($data_ortu_wali);
+                        ?>
+
+                        <!-- Tombol Cetak -->
+                        <li style="margin-right:15px;">
+                            <?php if ($ortu_kosong): ?>
+                                <a href="#" onclick="alert('Harap lengkapi data Orang Tua/Wali terlebih dahulu di Dashboard!')" class="btn icon icon-left btn-warning">
+                            <?php else: ?>
+                                <a href="Master Data/Siswa/cetak.php" class="btn icon icon-left btn-warning">
+                            <?php endif; ?>
+                                <svg fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M448 192V77.3c0-8.5-3.4-16.6-9.4-22.6L393.4 9.4c-6-6-14.1-9.4-22.6-9.4H96C78.3 0 64 14.3 64 32v160c-35.4 0-64 28.7-64 64v112c0 8.8 7.2 16 16 16h48v96c0 17.7 14.3 32 32 32h320c17.7 0 32-14.3 32-32v-96h48c8.8 0 16-7.2 16-16V256c0-35.4-28.7-64-64-64zm-64 256H128v-96h256v96zm0-224H128V64h192v48c0 8.8 7.2 16 16 16h48v96zm48 72c-13.3 0-24-10.8-24-24 0-13.3 10.8-24 24-24s24 10.7 24 24c0 13.3-10.8 24-24 24z"/></svg>
+                                Cetak PDF
+                            </a>
+                        </li>
+
+                        <li>
+                            <?php if ($ortu_kosong): ?>
+                                <a href="#" onclick="alert('Harap lengkapi data Orang Tua/Wali terlebih dahulu di Dashboard!')" class="btn icon icon-left btn-success">
+                            <?php else: ?>
+                                <a href="Master Data/Siswa/cetak_excel.php" class="btn icon icon-left btn-success">
+                            <?php endif; ?>
+                                <svg fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M448 192V77.3c0-8.5-3.4-16.6-9.4-22.6L393.4 9.4c-6-6-14.1-9.4-22.6-9.4H96C78.3 0 64 14.3 64 32v160c-35.4 0-64 28.7-64 64v112c0 8.8 7.2 16 16 16h48v96c0 17.7 14.3 32 32 32h320c17.7 0 32-14.3 32-32v-96h48c8.8 0 16-7.2 16-16V256c0-35.4-28.7-64-64-64zm-64 256H128v-96h256v96zm0-224H128V64h192v48c0 8.8 7.2 16 16 16h48v96zm48 72c-13.3 0-24-10.8-24-24 0-13.3 10.8-24 24-24s24 10.7 24 24c0 13.3-10.8 24-24 24z"/></svg>
+                                Cetak EXCEL
+                            </a>
+                        </li>
+
                     </ol>
                 </nav>
             </div>
@@ -421,325 +456,344 @@ $data_ortu_wali = mysqli_fetch_assoc($query_detail_ortu);
             </div>
             <div class="col-md-6 col-12">
                 <div class="card">
-                    <div class="card-header">
-                        <h4 class="card-title">Data Ayah Kandung</h4>
-                    </div>
                     <div class="card-content">
                         <div class="card-body">
                             <form class="form" method="POST">
+                                <?php
+                                if (!isset($data_ortu_wali) || !is_array($data_ortu_wali)) {
+                                    $data_ortu_wali = [];
+                                }
+                                function safe($arr, $key) {
+                                    return isset($arr[$key]) ? $arr[$key] : '';
+                                }
+                                ?>
+                                <div class="card-header">
+                                    <h4 class="card-title">Data Ayah Kandung</h4>
+                                </div>
                                 <div class="row">
+                                    <!-- Nama Ayah -->
                                     <div class="col-md-12 col-12">
                                         <div class="form-group">
                                             <label for="nama-ayah-column">Nama Ayah</label>
-                                            <input type="text" id="nama-ayah-column" class="form-control" name="NAMA_AYAH" value="<?php echo $data_ortu_wali['NAMA_AYAH']; ?>" required>
-                                            <div class="valid-feedback">Bagus!</div>
-                                            <div class="invalid-feedback">Wajib Diisi!</div>
+                                            <input type="text" id="nama-ayah-column" class="form-control" name="NAMA_AYAH" value="<?php echo safe($data_ortu_wali, 'NAMA_AYAH'); ?>" required>
                                         </div>
                                     </div>
+
+                                    <!-- Tempat Lahir -->
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
                                             <label for="tempat-lahir-ayah-column">Tempat Lahir</label>
-                                            <input type="text" id="tempat-lahir-ayah-column" class="form-control" name="TEMPAT_LAHIR_AYAH" value="<?php echo $data_ortu_wali['TEMPAT_LAHIR_AYAH']; ?>" required>
-                                            <div class="valid-feedback">Bagus!</div>
-                                            <div class="invalid-feedback">Wajib Diisi!</div>
+                                            <input type="text" id="tempat-lahir-ayah-column" class="form-control" name="TEMPAT_LAHIR_AYAH" value="<?php echo safe($data_ortu_wali, 'TEMPAT_LAHIR_AYAH'); ?>" required>
                                         </div>
                                     </div>
+
+                                    <!-- Tanggal Lahir -->
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
                                             <label for="tgl-lahir-ayah-column">Tanggal Lahir</label>
-                                            <input type="date" id="tgl-lahir-ayah-column" class="form-control" name="TGL_LAHIR_AYAH" value="<?php echo $data_ortu_wali['TGL_LAHIR_AYAH']; ?>" required>
-                                            <div class="valid-feedback">Bagus!</div>
-                                            <div class="invalid-feedback">Wajib Diisi!</div>
+                                            <input type="date" id="tgl-lahir-ayah-column" class="form-control" name="TGL_LAHIR_AYAH" value="<?php echo safe($data_ortu_wali, 'TGL_LAHIR_AYAH'); ?>" required>
                                         </div>
                                     </div>
+
+                                    <!-- Pendidikan Terakhir -->
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
                                             <label for="pendidikan-terakhir-ayah-column">Pendidikan Terakhir</label>
                                             <select class="form-control" id="pendidikan-terakhir-ayah-column" name="PENDIDIKAN_TERAKHIR_AYAH" required>
                                                 <option value="">-- Pilih Pendidikan Terakhir --</option>
-                                                <option value="SD" <?php echo ($data_ortu_wali['PENDIDIKAN_TERAKHIR_AYAH'] == 'SD') ? 'selected' : ''; ?>>Sekolah Dasar (SD)</option>
-                                                <option value="SMP" <?php echo ($data_ortu_wali['PENDIDIKAN_TERAKHIR_AYAH'] == 'SMP') ? 'selected' : ''; ?>>Sekolah Menengah Pertama (SMP)</option>
-                                                <option value="SMA/SMK" <?php echo ($data_ortu_wali['PENDIDIKAN_TERAKHIR_AYAH'] == 'SMA/SMK') ? 'selected' : ''; ?>>Sekolah Menengah Atas (SMA) / Sekolah Menengah Kejuruan (SMK)</option>
-                                                <option value="D1" <?php echo ($data_ortu_wali['PENDIDIKAN_TERAKHIR_AYAH'] == 'D1') ? 'selected' : ''; ?>>Diploma 1 (D1)</option>
-                                                <option value="D2" <?php echo ($data_ortu_wali['PENDIDIKAN_TERAKHIR_AYAH'] == 'D2') ? 'selected' : ''; ?>>Diploma 2 (D2)</option>
-                                                <option value="D3" <?php echo ($data_ortu_wali['PENDIDIKAN_TERAKHIR_AYAH'] == 'D3') ? 'selected' : ''; ?>>Diploma 3 (D3)</option>
-                                                <option value="D4/S1" <?php echo ($data_ortu_wali['PENDIDIKAN_TERAKHIR_AYAH'] == 'D4/S1') ? 'selected' : ''; ?>>Diploma 4 (D4) / Sarjana (S1)</option>
-                                                <option value="S2" <?php echo ($data_ortu_wali['PENDIDIKAN_TERAKHIR_AYAH'] == 'S2') ? 'selected' : ''; ?>>Magister (S2)</option>
-                                                <option value="S3" <?php echo ($data_ortu_wali['PENDIDIKAN_TERAKHIR_AYAH'] == 'S3') ? 'selected' : ''; ?>>Doktor (S3)</option>
-                                                <option value="Lainnya" <?php echo ($data_ortu_wali['PENDIDIKAN_TERAKHIR_AYAH'] == 'Lainnya') ? 'selected' : ''; ?>>Lainnya</option>
+                                                <?php
+                                                $pendidikan = ['SD','SMP','SMA/SMK','D1','D2','D3','D4/S1','S2','S3','Lainnya'];
+                                                foreach ($pendidikan as $val) {
+                                                    $selected = (safe($data_ortu_wali, 'PENDIDIKAN_TERAKHIR_AYAH') == $val) ? 'selected' : '';
+                                                    echo "<option value=\"$val\" $selected>$val</option>";
+                                                }
+                                                ?>
                                             </select>
-                                            <div class="valid-feedback">Bagus!</div>
-                                            <div class="invalid-feedback">Wajib Diisi!</div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+
+                                    <!-- Agama -->
+                                    <div class="col-md-6 col-12">
                                         <div class="form-group">
                                             <label for="AGAMA_AYAH">Agama</label>
                                             <select class="form-control" id="AGAMA_AYAH" name="AGAMA_AYAH" required>
                                                 <option value=""> ~~~ Pilih Agama ~~~ </option>
-                                                <option value="Islam" <?php echo ($data_ortu_wali['AGAMA_AYAH'] == 'Islam') ? 'selected' : ''; ?>>Islam</option>
-                                                <option value="Kristen Protestan" <?php echo ($data_ortu_wali['AGAMA_AYAH'] == 'Kristen Protestan') ? 'selected' : ''; ?>>Kristen Protestan</option>
-                                                <option value="Kristen Katolik" <?php echo ($data_ortu_wali['AGAMA_AYAH'] == 'Kristen Katolik') ? 'selected' : ''; ?>>Kristen Katolik</option>
-                                                <option value="Hindu" <?php echo ($data_ortu_wali['AGAMA_AYAH'] == 'Hindu') ? 'selected' : ''; ?>>Hindu</option>
-                                                <option value="Buddha" <?php echo ($data_ortu_wali['AGAMA_AYAH'] == 'Buddha') ? 'selected' : ''; ?>>Buddha</option>
-                                                <option value="Konghucu" <?php echo ($data_ortu_wali['AGAMA_AYAH'] == 'Konghucu') ? 'selected' : ''; ?>>Konghucu</option>
+                                                <?php
+                                                $agama = ['Islam', 'Kristen Protestan', 'Kristen Katolik', 'Hindu', 'Buddha', 'Konghucu'];
+                                                foreach ($agama as $ag) {
+                                                    $selected = (safe($data_ortu_wali, 'AGAMA_AYAH') == $ag) ? 'selected' : '';
+                                                    echo "<option value=\"$ag\" $selected>$ag</option>";
+                                                }
+                                                ?>
                                             </select>
-                                            <div class="valid-feedback"> Bagus! </div>
-                                            <div class="invalid-feedback"> Wajib Diisi! </div>
                                         </div>
                                     </div>
+
+                                    <!-- Pekerjaan -->
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
                                             <label for="pekerjaan-ayah-column">Pekerjaan</label>
-                                            <input type="text" id="pekerjaan-ayah-column" class="form-control" name="PEKERJAAN_AYAH" value="<?php echo $data_ortu_wali['PEKERJAAN_AYAH']; ?>" required>
-                                            <div class="valid-feedback">Bagus!</div>
-                                            <div class="invalid-feedback">Wajib Diisi!</div>
+                                            <input type="text" id="pekerjaan-ayah-column" class="form-control" name="PEKERJAAN_AYAH" value="<?php echo safe($data_ortu_wali, 'PEKERJAAN_AYAH'); ?>" required>
                                         </div>
                                     </div>
+
+                                    <!-- Kode Pos -->
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
                                             <label for="kode-pos-ayah-column">Kode Pos</label>
-                                            <input type="number" id="kode-pos-ayah-column" class="form-control" name="KODE_POS_AYAH" value="<?php echo $data_ortu_wali['KODE_POS_AYAH']; ?>" required>
-                                            <div class="valid-feedback">Bagus!</div>
-                                            <div class="invalid-feedback">Wajib Diisi!</div>
+                                            <input type="number" id="kode-pos-ayah-column" class="form-control" name="KODE_POS_AYAH" value="<?php echo safe($data_ortu_wali, 'KODE_POS_AYAH'); ?>" required>
                                         </div>
                                     </div>
+
+                                    <!-- Nomor Telepon -->
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
                                             <label for="telepon-ayah-column">Nomor Telepon</label>
-                                            <input type="number" id="telepon-ayah-column" class="form-control" name="TELEPON_AYAH" value="<?php echo $data_ortu_wali['TELEPON_AYAH']; ?>" required>
-                                            <div class="valid-feedback">Bagus!</div>
-                                            <div class="invalid-feedback">Wajib Diisi!</div>
+                                            <input type="number" id="telepon-ayah-column" class="form-control" name="TELEPON_AYAH" value="<?php echo safe($data_ortu_wali, 'TELEPON_AYAH'); ?>" required>
                                         </div>
                                     </div>
+
+                                    <!-- Alamat Rumah -->
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
                                             <label for="alamat-rumah-ayah-column">Alamat Rumah</label>
-                                            <textarea id="alamat-rumah-ayah-column" class="form-control" name="ALAMAT_RUMAH_AYAH" required style="height:80px"><?php echo $data_ortu_wali['ALAMAT_RUMAH_AYAH']; ?></textarea>
-                                            <div class="valid-feedback">Bagus!</div>
-                                            <div class="invalid-feedback">Wajib Diisi!</div>
+                                            <textarea id="alamat-rumah-ayah-column" class="form-control" name="ALAMAT_RUMAH_AYAH" required style="height:80px"><?php echo safe($data_ortu_wali, 'ALAMAT_RUMAH_AYAH'); ?></textarea>
                                         </div>
                                     </div>
                                 </div>
+
                                 <hr>
                                 <div class="card-header">
                                     <h4 class="card-title">Data Ibu Kandung</h4>
                                 </div>
                                 <div class="row">
+                                    <!-- Data Ibu -->
                                     <div class="col-md-12 col-12">
-                                            <div class="form-group">
-                                                <label for="NAMA_IBU">Nama Ibu</label>
-                                                <input type="text" id="NAMA_IBU" class="form-control" name="NAMA_IBU" value="<?php echo $data_ortu_wali['NAMA_IBU']; ?>" required>
-                                                <div class="valid-feedback">Bagus!</div>
-                                                <div class="invalid-feedback">Wajib Diisi!</div>
-                                            </div>
+                                        <div class="form-group">
+                                            <label for="NAMA_IBU">Nama Ibu</label>
+                                            <input type="text" id="NAMA_IBU" class="form-control" name="NAMA_IBU" value="<?php echo safe($data_ortu_wali, 'NAMA_IBU'); ?>" required>
+                                            <div class="valid-feedback">Bagus!</div>
+                                            <div class="invalid-feedback">Wajib Diisi!</div>
+                                        </div>
                                     </div>
                                     <div class="col-md-6 col-12">
-                                            <div class="form-group">
-                                                <label for="tempat-lahir-ibu-column">Tempat Lahir</label>
-                                                <input type="text" id="tempat-lahir-ibu-column" class="form-control" name="TEMPAT_LAHIR_IBU" value="<?php echo $data_ortu_wali['TEMPAT_LAHIR_IBU']; ?>" required>
-                                                <div class="valid-feedback">Bagus!</div>
-                                                <div class="invalid-feedback">Wajib Diisi!</div>
-                                            </div>
+                                        <div class="form-group">
+                                            <label for="tempat-lahir-ibu-column">Tempat Lahir</label>
+                                            <input type="text" id="tempat-lahir-ibu-column" class="form-control" name="TEMPAT_LAHIR_IBU" value="<?php echo safe($data_ortu_wali, 'TEMPAT_LAHIR_IBU'); ?>" required>
+                                            <div class="valid-feedback">Bagus!</div>
+                                            <div class="invalid-feedback">Wajib Diisi!</div>
+                                        </div>
                                     </div>
                                     <div class="col-md-6 col-12">
-                                            <div class="form-group">
-                                                <label for="tgl-lahir-ibu-column">Tanggal Lahir</label>
-                                                <input type="date" id="tgl-lahir-ibu-column" class="form-control" name="TGL_LAHIR_IBU" value="<?php echo $data_ortu_wali['TGL_LAHIR_IBU']; ?>" required>
-                                                <div class="valid-feedback">Bagus!</div>
-                                                <div class="invalid-feedback">Wajib Diisi!</div>
-                                            </div>
-                                    </div>
-                                    <div class="col-md-6 ">
-                                            <div class="form-group">
-                                                <label for="PENDIDIKAN_TERAKHIR_IBU">Pendidikan Terakhir</label>
-                                                <select class="form-control" id="PENDIDIKAN_TERAKHIR_IBU" name="PENDIDIKAN_TERAKHIR_IBU" required>
-                                                    <option value="">-- Pilih Pendidikan Terakhir --</option>
-                                                    <option value="SD" <?php echo ($data_ortu_wali['PENDIDIKAN_TERAKHIR_IBU'] == 'SD') ? 'selected' : ''; ?>>Sekolah Dasar (SD)</option>
-                                                    <option value="SMP" <?php echo ($data_ortu_wali['PENDIDIKAN_TERAKHIR_IBU'] == 'SMP') ? 'selected' : ''; ?>>Sekolah Menengah Pertama (SMP)</option>
-                                                    <option value="SMA/SMK" <?php echo ($data_ortu_wali['PENDIDIKAN_TERAKHIR_IBU'] == 'SMA/SMK') ? 'selected' : ''; ?>>Sekolah Menengah Atas (SMA) / Sekolah Menengah Kejuruan (SMK)</option>
-                                                    <option value="D1" <?php echo ($data_ortu_wali['PENDIDIKAN_TERAKHIR_IBU'] == 'D1') ? 'selected' : ''; ?>>Diploma 1 (D1)</option>
-                                                    <option value="D2" <?php echo ($data_ortu_wali['PENDIDIKAN_TERAKHIR_IBU'] == 'D2') ? 'selected' : ''; ?>>Diploma 2 (D2)</option>
-                                                    <option value="D3" <?php echo ($data_ortu_wali['PENDIDIKAN_TERAKHIR_IBU'] == 'D3') ? 'selected' : ''; ?>>Diploma 3 (D3)</option>
-                                                    <option value="D4/S1" <?php echo ($data_ortu_wali['PENDIDIKAN_TERAKHIR_IBU'] == 'D4/S1') ? 'selected' : ''; ?>>Diploma 4 (D4) / Sarjana (S1)</option>
-                                                    <option value="S2" <?php echo ($data_ortu_wali['PENDIDIKAN_TERAKHIR_IBU'] == 'S2') ? 'selected' : ''; ?>>Magister (S2)</option>
-                                                    <option value="S3" <?php echo ($data_ortu_wali['PENDIDIKAN_TERAKHIR_IBU'] == 'S3') ? 'selected' : ''; ?>>Doktor (S3)</option>
-                                                    <option value="Lainnya" <?php echo ($data_ortu_wali['PENDIDIKAN_TERAKHIR_IBU'] == 'Lainnya') ? 'selected' : ''; ?>>Lainnya</option>
-                                                </select>
-                                                <div class="valid-feedback">Bagus!</div>
-                                                <div class="invalid-feedback">Wajib Diisi!</div>
-                                            </div>
+                                        <div class="form-group">
+                                            <label for="tgl-lahir-ibu-column">Tanggal Lahir</label>
+                                            <input type="date" id="tgl-lahir-ibu-column" class="form-control" name="TGL_LAHIR_IBU" value="<?php echo safe($data_ortu_wali, 'TGL_LAHIR_IBU'); ?>" required>
+                                            <div class="valid-feedback">Bagus!</div>
+                                            <div class="invalid-feedback">Wajib Diisi!</div>
+                                        </div>
                                     </div>
                                     <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="AGAMA_IBU">Agama</label>
-                                                <select class="form-control" id="AGAMA_IBU" name="AGAMA_IBU" required>
-                                                    <option value=""> ~~~ Pilih Agama ~~~ </option>
-                                                    <option value="Islam" <?php echo ($data_ortu_wali['AGAMA_IBU'] == 'Islam') ? 'selected' : ''; ?>>Islam</option>
-                                                    <option value="Kristen Protestan" <?php echo ($data_ortu_wali['AGAMA_IBU'] == 'Kristen Protestan') ? 'selected' : ''; ?>>Kristen Protestan</option>
-                                                    <option value="Kristen Katolik" <?php echo ($data_ortu_wali['AGAMA_IBU'] == 'Kristen Katolik') ? 'selected' : ''; ?>>Kristen Katolik</option>
-                                                    <option value="Hindu" <?php echo ($data_ortu_wali['AGAMA_IBU'] == 'Hindu') ? 'selected' : ''; ?>>Hindu</option>
-                                                    <option value="Buddha" <?php echo ($data_ortu_wali['AGAMA_IBU'] == 'Buddha') ? 'selected' : ''; ?>>Buddha</option>
-                                                    <option value="Konghucu" <?php echo ($data_ortu_wali['AGAMA_IBU'] == 'Konghucu') ? 'selected' : ''; ?>>Konghucu</option>
-                                                </select>
-                                                <div class="valid-feedback"> Bagus! </div>
-                                                <div class="invalid-feedback"> Wajib Diisi! </div>
-                                            </div>
+                                        <div class="form-group">
+                                            <label for="PENDIDIKAN_TERAKHIR_IBU">Pendidikan Terakhir</label>
+                                            <select class="form-control" id="PENDIDIKAN_TERAKHIR_IBU" name="PENDIDIKAN_TERAKHIR_IBU" required>
+                                                <option value="">-- Pilih Pendidikan Terakhir --</option>
+                                                <?php
+                                                $pendidikan = ['SD','SMP','SMA/SMK','D1','D2','D3','D4/S1','S2','S3','Lainnya'];
+                                                foreach ($pendidikan as $val) {
+                                                    $selected = (safe($data_ortu_wali, 'PENDIDIKAN_TERAKHIR_IBU') == $val) ? 'selected' : '';
+                                                    echo "<option value=\"$val\" $selected>$val</option>";
+                                                }
+                                                ?>
+                                            </select>
+                                            <div class="valid-feedback">Bagus!</div>
+                                            <div class="invalid-feedback">Wajib Diisi!</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="AGAMA_IBU">Agama</label>
+                                            <select class="form-control" id="AGAMA_IBU" name="AGAMA_IBU" required>
+                                                <option value=""> ~~~ Pilih Agama ~~~ </option>
+                                                <?php
+                                                $agama = ['Islam', 'Kristen Protestan', 'Kristen Katolik', 'Hindu', 'Buddha', 'Konghucu'];
+                                                foreach ($agama as $ag) {
+                                                    $selected = (safe($data_ortu_wali, 'AGAMA_IBU') == $ag) ? 'selected' : '';
+                                                    echo "<option value=\"$ag\" $selected>$ag</option>";
+                                                }
+                                                ?>
+                                            </select>
+                                            <div class="valid-feedback">Bagus!</div>
+                                            <div class="invalid-feedback">Wajib Diisi!</div>
+                                        </div>
                                     </div>
                                     <div class="col-md-6 col-12">
-                                            <div class="form-group">
-                                                <label for="pekerjaan-ibu-column">Pekerjaan</label>
-                                                <input type="text" id="pekerjaan-ibu-column" class="form-control" name="PEKERJAAN_IBU" value="<?php echo $data_ortu_wali                                            ['PEKERJAAN_IBU']; ?>" required>
-                                                <div class="valid-feedback">Bagus!</div>
-                                                <div class="invalid-feedback">Wajib Diisi!</div>
-                                            </div>                                       
+                                        <div class="form-group">
+                                            <label for="pekerjaan-ibu-column">Pekerjaan</label>
+                                            <input type="text" id="pekerjaan-ibu-column" class="form-control" name="PEKERJAAN_IBU" value="<?php echo safe($data_ortu_wali, 'PEKERJAAN_IBU'); ?>" required>
+                                            <div class="valid-feedback">Bagus!</div>
+                                            <div class="invalid-feedback">Wajib Diisi!</div>
+                                        </div>                                       
                                     </div>
                                     <div class="col-md-6 col-12">
-                                            <div class="form-group">
-                                                <label for="kode-pos-ibu-column">Kode Pos</label>
-                                                <input type="number" id="kode-pos-ibu-column" class="form-control" name="KODE_POS_IBU" value="<?php echo $data_ortu_wali['KODE_POS_IBU']; ?>" required>
-                                                <div class="valid-feedback">Bagus!</div>
-                                                <div class="invalid-feedback">Wajib Diisi!</div>
-                                            </div>
+                                        <div class="form-group">
+                                            <label for="kode-pos-ibu-column">Kode Pos</label>
+                                            <input type="number" id="kode-pos-ibu-column" class="form-control" name="KODE_POS_IBU" value="<?php echo safe($data_ortu_wali, 'KODE_POS_IBU'); ?>" required>
+                                            <div class="valid-feedback">Bagus!</div>
+                                            <div class="invalid-feedback">Wajib Diisi!</div>
+                                        </div>
                                     </div>
                                     <div class="col-md-6 col-12">
-                                            <div class="form-group">
-                                                <label for="telepon-ibu-column">Nomor Telepon</label>
-                                                <input type="number" id="telepon-ibu-column" class="form-control" name="TELEPON_IBU" value="<?php echo $data_ortu_wali['TELEPON_IBU']; ?>" required>
-                                                <div class="valid-feedback">Bagus!</div>
-                                                <div class="invalid-feedback">Wajib Diisi!</div>
-                                            </div>
+                                        <div class="form-group">
+                                            <label for="telepon-ibu-column">Nomor Telepon</label>
+                                            <input type="number" id="telepon-ibu-column" class="form-control" name="TELEPON_IBU" value="<?php echo safe($data_ortu_wali, 'TELEPON_IBU'); ?>" required>
+                                            <div class="valid-feedback">Bagus!</div>
+                                            <div class="invalid-feedback">Wajib Diisi!</div>
+                                        </div>
                                     </div>
                                     <div class="col-md-6 col-12">
-                                            <div class="form-group">
-                                                <label for="alamat-rumah-ibu-column">Alamat Rumah</label>
-                                                <textarea id="alamat-rumah-ibu-column" class="form-control" name="ALAMAT_RUMAH_IBU" required style="height:80px"><?php echo $data_ortu_wali['ALAMAT_RUMAH_IBU']; ?></textarea>
-                                                <div class="valid-feedback">Bagus!</div>
-                                                <div class="invalid-feedback">Wajib Diisi!</div>
-                                            </div>
+                                        <div class="form-group">
+                                            <label for="alamat-rumah-ibu-column">Alamat Rumah</label>
+                                            <textarea id="alamat-rumah-ibu-column" class="form-control" name="ALAMAT_RUMAH_IBU" required style="height:80px"><?php echo safe($data_ortu_wali, 'ALAMAT_RUMAH_IBU'); ?></textarea>
+                                            <div class="valid-feedback">Bagus!</div>
+                                            <div class="invalid-feedback">Wajib Diisi!</div>
+                                        </div>
                                     </div>
+                                </div>
                                 <hr>
                                 <div class="card-header">
                                     <h4 class="card-title">Data Wali</h4>
                                 </div>
                                 <div class="row">
-                                            <div class="col-md-12 col-12">
-                                                <div class="form-group">
-                                                    <label for="nama-wali-column">Nama Wali</label>
-                                                    <input type="text" id="nama-wali-column" class="form-control" name="NAMA_WALI" value="<?php echo $data_ortu_wali['NAMA_WALI']; ?>" >
-                                                    <div class="valid-feedback">Bagus!</div>
-                                                    <div class="invalid-feedback">Wajib Diisi!</div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 col-12">
-                                                <div class="form-group">
-                                                    <label for="tempat-lahir-wali-column">Tempat Lahir</label>
-                                                    <input type="text" id="tempat-lahir-wali-column" class="form-control" name="TEMPAT_LAHIR_WALI" value="<?php echo $data_ortu_wali['TEMPAT_LAHIR_WALI']; ?>" >
-                                                    <div class="valid-feedback">Bagus!</div>
-                                                    <div class="invalid-feedback">Wajib Diisi!</div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 col-12">
-                                                <div class="form-group">
-                                                    <label for="tgl-lahir-wali-column">Tanggal Lahir</label>
-                                                    <input type="date" id="tgl-lahir-wali-column" class="form-control" name="TGL_LAHIR_WALI" value="<?php echo $data_ortu_wali['TGL_LAHIR_WALI']; ?>" >
-                                                    <div class="valid-feedback">Bagus!</div>
-                                                    <div class="invalid-feedback">Wajib Diisi!</div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 col-12">
-                                                <div class="form-group">
-                                                <label for="pendidikan-terakhir-wali-column">Pendidikan Terakhir</label>
-                                                    <select class="form-control" id="pendidikan-terakhir-wali-column" name="PENDIDIKAN_TERAKHIR_WALI" >
-                                                        <option value="">-- Pilih Pendidikan Terakhir --</option>
-                                                        <option value="SD" <?php echo ($data_ortu_wali['PENDIDIKAN_TERAKHIR_WALI'] == 'SD') ? 'selected' : ''; ?>>Sekolah Dasar (SD)</option>
-                                                        <option value="SMP" <?php echo ($data_ortu_wali['PENDIDIKAN_TERAKHIR_WALI'] == 'SMP') ? 'selected' : ''; ?>>Sekolah Menengah Pertama (SMP)</option>
-                                                        <option value="SMA/SMK" <?php echo ($data_ortu_wali['PENDIDIKAN_TERAKHIR_WALI'] == 'SMA/SMK') ? 'selected' : ''; ?>>Sekolah Menengah Atas (SMA) / Sekolah Menengah Kejuruan (SMK)</option>
-                                                        <option value="D1" <?php echo ($data_ortu_wali['PENDIDIKAN_TERAKHIR_WALI'] == 'D1') ? 'selected' : ''; ?>>Diploma 1 (D1)</option>
-                                                        <option value="D2" <?php echo ($data_ortu_wali['PENDIDIKAN_TERAKHIR_WALI'] == 'D2') ? 'selected' : ''; ?>>Diploma 2 (D2)</option>
-                                                        <option value="D3" <?php echo ($data_ortu_wali['PENDIDIKAN_TERAKHIR_WALI'] == 'D3') ? 'selected' : ''; ?>>Diploma 3 (D3)</option>
-                                                        <option value="D4/S1" <?php echo ($data_ortu_wali['PENDIDIKAN_TERAKHIR_WALI'] == 'D4/S1') ? 'selected' : ''; ?>>Diploma 4 (D4) / Sarjana (S1)</option>
-                                                        <option value="S2" <?php echo ($data_ortu_wali['PENDIDIKAN_TERAKHIR_WALI'] == 'S2') ? 'selected' : ''; ?>>Magister (S2)</option>
-                                                        <option value="S3" <?php echo ($data_ortu_wali['PENDIDIKAN_TERAKHIR_WALI'] == 'S3') ? 'selected' : ''; ?>>Doktor (S3)</option>
-                                                        <option value="Lainnya" <?php echo ($data_ortu_wali['PENDIDIKAN_TERAKHIR_WALI'] == 'Lainnya') ? 'selected' : ''; ?>>Lainnya</option>
-                                                    </select>
-                                                    <div class="valid-feedback">Bagus!</div>
-                                                    <div class="invalid-feedback">Wajib Diisi!</div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="AGAMA_WALI">Agama</label>
-                                                    <select class="form-control" id="AGAMA_WALI" name="AGAMA_WALI" >
-                                                        <option value=""> ~~~ Pilih Agama ~~~ </option>
-                                                        <option value="Islam" <?php echo ($data_ortu_wali['AGAMA_WALI'] == 'Islam') ? 'selected' : ''; ?>>Islam</option>
-                                                        <option value="Kristen Protestan" <?php echo ($data_ortu_wali['AGAMA_WALI'] == 'Kristen Protestan') ? 'selected' : ''; ?>>Kristen Protestan</option>
-                                                        <option value="Kristen Katolik" <?php echo ($data_ortu_wali['AGAMA_WALI'] == 'Kristen Katolik') ? 'selected' : ''; ?>>Kristen Katolik</option>
-                                                        <option value="Hindu" <?php echo ($data_ortu_wali['AGAMA_WALI'] == 'Hindu') ? 'selected' : ''; ?>>Hindu</option>
-                                                        <option value="Buddha" <?php echo ($data_ortu_wali['AGAMA_WALI'] == 'Buddha') ? 'selected' : ''; ?>>Buddha</option>
-                                                        <option value="Konghucu" <?php echo ($data_ortu_wali['AGAMA_WALI'] == 'Konghucu') ? 'selected' : ''; ?>>Konghucu</option>
-                                                    </select>
-                                                    <div class="valid-feedback"> Bagus! </div>
-                                                    <div class="invalid-feedback"> Wajib Diisi! </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 col-12">
-                                                <div class="form-group">
-                                                    <label for="pekerjaan-wali-column">Pekerjaan</label>
-                                                    <input type="text" id="pekerjaan-wali-column" class="form-control" name="PEKERJAAN_WALI" value="<?php echo $data_ortu_wali['PEKERJAAN_WALI']; ?>" >
-                                                    <div class="valid-feedback">Bagus!</div>
-                                                    <div class="invalid-feedback">Wajib Diisi!</div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 col-12">
-                                                <div class="form-group">
-                                                    <label for="kode-pos-wali-column">Kode Pos</label>
-                                                    <input type="number" id="kode-pos-wali-column" class="form-control" name="KODE_POS_WALI" value="<?php echo $data_ortu_wali['KODE_POS_WALI']; ?>" >
-                                                    <div class="valid-feedback">Bagus!</div>
-                                                    <div class="invalid-feedback">Wajib Diisi!</div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 col-12">
-                                                <div class="form-group">
-                                                    <label for="telepon-wali-column">Nomor Telepon</label>
-                                                    <input type="number" id="telepon-wali-column" class="form-control" name="TELEPON_WALI" value="<?php echo $data_ortu_wali['TELEPON_WALI']; ?>">
-                                                    <div class="valid-feedback">Bagus!</div>
-                                                    <div class="invalid-feedback">Wajib Diisi!</div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 col-12">
-                                                <div class="form-group">
-                                                    <label for="hubungan-wali-column">Hubungan dengan Siswa</label>
-                                                    <input type="text" id="hubungan-wali-column" class="form-control" name="HUBUNGAN_WALI" value="<?php echo $data_ortu_wali['HUBUNGAN_WALI']; ?>">
-                                                    <div class="valid-feedback">Bagus!</div>
-                                                    <div class="invalid-feedback">Wajib Diisi!</div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 col-12">
-                                                <div class="form-group">
-                                                    <label for="alamat-rumah-wali-column">Alamat Rumah</label>
-                                                    <textarea id="alamat-rumah-wali-column" class="form-control" name="ALAMAT_RUMAH_WALI"  style="height:80px"><?php echo $data_ortu_wali['ALAMAT_RUMAH_WALI']; ?></textarea>
-                                                    <div class="valid-feedback">Bagus!</div>
-                                                    <div class="invalid-feedback">Wajib Diisi!</div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 col-12">
-                                                <div class="form-group">
-                                                    <label for="tgl-buat-column">Tanggal Buat</label>
-                                                    <input type="text" id="tgl-buat-column" class="form-control" name="TGL_BUAT1" value="<?php echo $data_ortu_wali['TGL_BUAT1']; ?>" required>
-                                                    <div class="valid-feedback">Bagus!</div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 col-12">
-                                                <div class="form-group">
-                                                    <label for="tgl-ubah-column">Tanggal Ubah</label>
-                                                    <input type="text" id="tgl-ubah-column" class="form-control" name="TGL_UBAH1" value="<?php echo $data_ortu_wali['TGL_UBAH1']; ?>" required>
-                                                    <div class="valid-feedback">Bagus!</div>
-                                                </div>
-                                            </div>
-                                            <div class="col-12 d-flex justify-content-end">
-                                                <button type="submit" class="btn btn-primary me-1 mb-1" name="ubahdataortu">Submit</button>
-                                            </div>
+                                    <!-- Nama Wali -->
+                                    <div class="col-md-12 col-12">
+                                        <div class="form-group">
+                                            <label for="nama-wali-column">Nama Wali</label>
+                                            <input type="text" id="nama-wali-column" class="form-control" name="NAMA_WALI" value="<?php echo safe($data_ortu_wali, 'NAMA_WALI'); ?>" required>
+                                            <div class="valid-feedback">Bagus!</div>
+                                            <div class="invalid-feedback">Wajib Diisi!</div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Tempat & Tanggal Lahir -->
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for="tempat-lahir-wali-column">Tempat Lahir</label>
+                                            <input type="text" id="tempat-lahir-wali-column" class="form-control" name="TEMPAT_LAHIR_WALI" value="<?php echo safe($data_ortu_wali, 'TEMPAT_LAHIR_WALI'); ?>" required>
+                                            <div class="valid-feedback">Bagus!</div>
+                                            <div class="invalid-feedback">Wajib Diisi!</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for="tgl-lahir-wali-column">Tanggal Lahir</label>
+                                            <input type="date" id="tgl-lahir-wali-column" class="form-control" name="TGL_LAHIR_WALI" value="<?php echo safe($data_ortu_wali, 'TGL_LAHIR_WALI'); ?>" required>
+                                            <div class="valid-feedback">Bagus!</div>
+                                            <div class="invalid-feedback">Wajib Diisi!</div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Pendidikan Terakhir -->
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for="pendidikan-terakhir-wali-column">Pendidikan Terakhir</label>
+                                            <select class="form-control" id="pendidikan-terakhir-wali-column" name="PENDIDIKAN_TERAKHIR_WALI" required>
+                                                <option value="">-- Pilih Pendidikan Terakhir --</option>
+                                                <?php
+                                                $pendidikan = ['SD','SMP','SMA/SMK','D1','D2','D3','D4/S1','S2','S3','Lainnya'];
+                                                foreach ($pendidikan as $val) {
+                                                    $selected = (safe($data_ortu_wali, 'PENDIDIKAN_TERAKHIR_WALI') == $val) ? 'selected' : '';
+                                                    echo "<option value=\"$val\" $selected>$val</option>";
+                                                }
+                                                ?>
+                                            </select>
+                                            <div class="valid-feedback">Bagus!</div>
+                                            <div class="invalid-feedback">Wajib Diisi!</div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Agama -->
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for="AGAMA_WALI">Agama</label>
+                                            <select class="form-control" id="AGAMA_WALI" name="AGAMA_WALI" required>
+                                                <option value=""> ~~~ Pilih Agama ~~~ </option>
+                                                <?php
+                                                $agama = ['Islam', 'Kristen Protestan', 'Kristen Katolik', 'Hindu', 'Buddha', 'Konghucu'];
+                                                foreach ($agama as $ag) {
+                                                    $selected = (safe($data_ortu_wali, 'AGAMA_WALI') == $ag) ? 'selected' : '';
+                                                    echo "<option value=\"$ag\" $selected>$ag</option>";
+                                                }
+                                                ?>
+                                            </select>
+                                            <div class="valid-feedback">Bagus!</div>
+                                            <div class="invalid-feedback">Wajib Diisi!</div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Pekerjaan, Kode Pos, Telepon -->
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for="pekerjaan-wali-column">Pekerjaan</label>
+                                            <input type="text" id="pekerjaan-wali-column" class="form-control" name="PEKERJAAN_WALI" value="<?php echo safe($data_ortu_wali, 'PEKERJAAN_WALI'); ?>" required>
+                                            <div class="valid-feedback">Bagus!</div>
+                                            <div class="invalid-feedback">Wajib Diisi!</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for="kode-pos-wali-column">Kode Pos</label>
+                                            <input type="number" id="kode-pos-wali-column" class="form-control" name="KODE_POS_WALI" value="<?php echo safe($data_ortu_wali, 'KODE_POS_WALI'); ?>" required>
+                                            <div class="valid-feedback">Bagus!</div>
+                                            <div class="invalid-feedback">Wajib Diisi!</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for="telepon-wali-column">Nomor Telepon</label>
+                                            <input type="number" id="telepon-wali-column" class="form-control" name="TELEPON_WALI" value="<?php echo safe($data_ortu_wali, 'TELEPON_WALI'); ?>" required>
+                                            <div class="valid-feedback">Bagus!</div>
+                                            <div class="invalid-feedback">Wajib Diisi!</div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Hubungan dan Alamat -->
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for="hubungan-wali-column">Hubungan dengan Siswa</label>
+                                            <input type="text" id="hubungan-wali-column" class="form-control" name="HUBUNGAN_WALI" value="<?php echo safe($data_ortu_wali, 'HUBUNGAN_WALI'); ?>" required>
+                                            <div class="valid-feedback">Bagus!</div>
+                                            <div class="invalid-feedback">Wajib Diisi!</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for="alamat-rumah-wali-column">Alamat Rumah</label>
+                                            <textarea id="alamat-rumah-wali-column" class="form-control" name="ALAMAT_RUMAH_WALI" required style="height:80px"><?php echo safe($data_ortu_wali, 'ALAMAT_RUMAH_WALI'); ?></textarea>
+                                            <div class="valid-feedback">Bagus!</div>
+                                            <div class="invalid-feedback">Wajib Diisi!</div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Tanggal Buat & Ubah -->
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for="tgl-buat-column">Tanggal Buat</label>
+                                            <input type="text" id="tgl-buat-column" class="form-control" name="TGL_BUAT1" value="<?php echo safe($data_ortu_wali, 'TGL_BUAT1'); ?>" required>
+                                            <div class="valid-feedback">Bagus!</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for="tgl-ubah-column">Tanggal Ubah</label>
+                                            <input type="text" id="tgl-ubah-column" class="form-control" name="TGL_UBAH1" value="<?php echo safe($data_ortu_wali, 'TGL_UBAH1'); ?>" required>
+                                            <div class="valid-feedback">Bagus!</div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Tombol Submit -->
+                                    <div class="col-12 d-flex justify-content-end">
+                                        <button type="submit" class="btn btn-primary me-1 mb-1" name="ubahdataortu">Submit</button>
+                                    </div>
                                 </div>
                             </form>
                         </div>
