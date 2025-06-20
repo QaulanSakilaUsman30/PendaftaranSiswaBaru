@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 07 Bulan Mei 2025 pada 06.22
+-- Waktu pembuatan: 21 Jun 2025 pada 01.20
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.2.12
 
@@ -43,12 +43,7 @@ CREATE TABLE `administrasi` (
 --
 
 INSERT INTO `administrasi` (`ID_BAYAR`, `ID_SISWA`, `NAMA_BANK`, `BUKTI_TRANSFER`, `STATUS`, `TGL_BUAT`, `JUMLAH_BIAYA`, `TGL_UBAH`) VALUES
-(1, 1, 'BRI', '', 'LUNAS', '2025-05-04 04:41:52', 70000, '2025-05-04 06:31:04'),
-(3, 2, 'BNI', '★ twinkling watermelon cast.jpg', 'LUNAS', '2025-05-04 07:22:49', 9000000, '2025-05-04 06:31:40'),
-(4, 3, 'bni', '', 'LUNAS', '2025-05-07 03:49:37', 876543, '2025-05-07 01:49:37'),
-(5, 4, 'jhg', '', 'LUNAS', '2025-05-07 03:49:48', 98765, '2025-05-07 01:49:48'),
-(6, 6, 'kjhgf', '', 'LUNAS', '2025-05-07 03:50:05', 98765, '2025-05-07 01:50:05'),
-(7, 5, 'oiugv', '', 'BELUM LUNAS', '2025-05-07 03:50:40', 987654, '2025-05-07 01:50:40');
+(1, 9, 'BNI', 'Relasi Tabel.png', 'LUNAS', '2025-05-22 07:56:51', 700000, '2025-05-22 05:56:51');
 
 -- --------------------------------------------------------
 
@@ -59,9 +54,9 @@ INSERT INTO `administrasi` (`ID_BAYAR`, `ID_SISWA`, `NAMA_BANK`, `BUKTI_TRANSFER
 CREATE TABLE `dataadmin` (
   `ID_ADMIN` int(11) NOT NULL,
   `NAMA_ADMIN` varchar(20) NOT NULL,
-  `EMAIL` varchar(40) NOT NULL,
-  `USERNAME` varchar(30) NOT NULL,
-  `PASSWORD` varchar(30) NOT NULL,
+  `USERNAME` varchar(100) NOT NULL,
+  `TELEPON` varchar(20) NOT NULL,
+  `PASSWORD` varchar(100) NOT NULL,
   `GAMBAR` varchar(100) NOT NULL,
   `TGL_BUAT` datetime NOT NULL,
   `TGL_UBAH` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
@@ -71,11 +66,8 @@ CREATE TABLE `dataadmin` (
 -- Dumping data untuk tabel `dataadmin`
 --
 
-INSERT INTO `dataadmin` (`ID_ADMIN`, `NAMA_ADMIN`, `EMAIL`, `USERNAME`, `PASSWORD`, `GAMBAR`, `TGL_BUAT`, `TGL_UBAH`) VALUES
-(1, 'Qaulan Sakila Usman', 'Usmanqaulan@gmail.com', 'ulan', 'ulan', '', '2025-05-04 06:24:37', '2025-05-04 05:29:36'),
-(2, 'Dwi Andriyani', 'Andriyani@gmail.com', 'lia', 'lia', '0a98e28a-2e61-4700-8904-4be8681b790c.jpg', '2025-05-04 06:13:25', '2025-05-04 05:28:09'),
-(4, 'Jubaidah', 'ida', 'ida', 'ida', 'download.jpg', '2025-05-04 07:03:53', '2025-05-04 05:03:53'),
-(5, 'gigi', 'lala', 'sisi', 'kuku', 'download (1).png', '2025-05-04 07:27:21', '2025-05-04 05:27:21');
+INSERT INTO `dataadmin` (`ID_ADMIN`, `NAMA_ADMIN`, `USERNAME`, `TELEPON`, `PASSWORD`, `GAMBAR`, `TGL_BUAT`, `TGL_UBAH`) VALUES
+(3, 'Admin', 'admin', '082191208347', '21232f297a57a5a743894a0e4a801fc3', 'Best 111+ Anime Profile Pictures 35.jpg', '2025-05-17 15:26:27', '2025-05-22 05:53:37');
 
 -- --------------------------------------------------------
 
@@ -94,7 +86,7 @@ CREATE TABLE `dataortu_wali` (
   `PEKERJAAN_AYAH` varchar(30) NOT NULL,
   `ALAMAT_RUMAH_AYAH` text NOT NULL,
   `KODE_POS_AYAH` int(5) NOT NULL,
-  `TELEPON_AYAH` int(15) NOT NULL,
+  `TELEPON_AYAH` varchar(15) NOT NULL,
   `NAMA_IBU` varchar(30) NOT NULL,
   `TEMPAT_LAHIR_IBU` varchar(20) NOT NULL,
   `TGL_LAHIR_IBU` date NOT NULL,
@@ -103,7 +95,7 @@ CREATE TABLE `dataortu_wali` (
   `PEKERJAAN_IBU` varchar(20) NOT NULL,
   `ALAMAT_RUMAH_IBU` text NOT NULL,
   `KODE_POS_IBU` int(5) NOT NULL,
-  `TELEPON_IBU` int(15) NOT NULL,
+  `TELEPON_IBU` varchar(15) NOT NULL,
   `NAMA_WALI` varchar(20) NOT NULL,
   `TEMPAT_LAHIR_WALI` varchar(20) NOT NULL,
   `TGL_LAHIR_WALI` date NOT NULL,
@@ -112,7 +104,7 @@ CREATE TABLE `dataortu_wali` (
   `PEKERJAAN_WALI` varchar(20) NOT NULL,
   `ALAMAT_RUMAH_WALI` text NOT NULL,
   `KODE_POS_WALI` int(5) NOT NULL,
-  `TELEPON_WALI` int(15) NOT NULL,
+  `TELEPON_WALI` varchar(15) NOT NULL,
   `HUBUNGAN_WALI` varchar(20) NOT NULL,
   `TGL_BUAT1` datetime NOT NULL,
   `TGL_UBAH1` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
@@ -123,9 +115,7 @@ CREATE TABLE `dataortu_wali` (
 --
 
 INSERT INTO `dataortu_wali` (`ID_ORTU_WALI`, `ID_SISWA`, `NAMA_AYAH`, `TEMPAT_LAHIR_AYAH`, `TGL_LAHIR_AYAH`, `AGAMA_AYAH`, `PENDIDIKAN_TERAKHIR_AYAH`, `PEKERJAAN_AYAH`, `ALAMAT_RUMAH_AYAH`, `KODE_POS_AYAH`, `TELEPON_AYAH`, `NAMA_IBU`, `TEMPAT_LAHIR_IBU`, `TGL_LAHIR_IBU`, `AGAMA_IBU`, `PENDIDIKAN_TERAKHIR_IBU`, `PEKERJAAN_IBU`, `ALAMAT_RUMAH_IBU`, `KODE_POS_IBU`, `TELEPON_IBU`, `NAMA_WALI`, `TEMPAT_LAHIR_WALI`, `TGL_LAHIR_WALI`, `AGAMA_WALI`, `PENDIDIKAN_TERAKHIR_WALI`, `PEKERJAAN_WALI`, `ALAMAT_RUMAH_WALI`, `KODE_POS_WALI`, `TELEPON_WALI`, `HUBUNGAN_WALI`, `TGL_BUAT1`, `TGL_UBAH1`) VALUES
-(3, 1, 'Vikram Rathore', 'India', '1999-09-09', 'Hindu', 'SMA/SMK', 'Guru', 'India', 1876, 987652345, 'Lalisa Mnaoban', 'korea', '1888-09-09', 'Kristen Katolik', 'SMA/SMK', 'chef', 'korea', 12345, 89764, 'Samsudin Haji', 'Tidore', '1999-09-09', 'Kristen Protestan', 'SMP', 'ingi', 'poiuytr', 19007, 9876543, 'anak', '2025-05-04 06:49:24', '2025-05-03 23:13:33'),
-(4, 2, 'lili lala', 'dfhyu', '1990-02-02', 'Hindu', 'D1', 'dyuytre', 'wertybv', 123456, 876543, 'siti', 'wefg', '1999-02-09', 'Hindu', 'D2', 'waitress', 'wefgb', 2345, 9890, '', '', '0000-00-00', '', '', '', '', 0, 0, '', '2025-05-04 06:56:36', '2025-05-03 23:14:30'),
-(5, 3, 'sdfg', 'wedrfg', '2009-09-09', 'Buddha', 'D2', 'ertghw', 'edfgb', 234, 3456, 'cgvhbjk', 'tfygui', '2008-08-08', 'Kristen Katolik', 'D3', 'iuytrdb', 'ugfvb', 9876, 9876, '', '', '0000-00-00', '', '', '', '', 0, 0, '', '2025-05-07 02:42:54', '2025-05-07 00:42:54');
+(1, 9, 'Usman Daud', 'Tidore', '1973-12-01', 'Islam', 'D4/S1', 'PNS/Guru', 'Desa Somahode', 18972, '082193645389', 'Julaiha Adam', 'Topo', '1982-05-09', 'Islam', 'SMA/SMK', 'Ibu Rumah Tangga', 'Desa Somahode', 18972, '085468299191', '', '', '0000-00-00', '', '', '', '', 0, '', '', '2025-05-17 15:43:49', '2025-05-17 13:43:49');
 
 -- --------------------------------------------------------
 
@@ -147,12 +137,12 @@ CREATE TABLE `datasiswa` (
   `AGAMA` enum('Islam','Kristen Protestan','Kristen Katolik','Hindu','Buddha','Konghucu') NOT NULL,
   `ALAMAT_RUMAH` text NOT NULL,
   `KODE_POS_RUMAH` varchar(5) NOT NULL,
-  `TELEPON_RUMAH` int(15) NOT NULL,
+  `TELEPON_RUMAH` varchar(15) NOT NULL,
   `ASAL_SEKOLAH` text NOT NULL,
   `KELAS_JURUSAN` varchar(20) NOT NULL,
   `ALAMAT_SEKOLAH` text NOT NULL,
   `KODE_POS_SEKOLAH` varchar(5) NOT NULL,
-  `TELEPON_SEKOLAH` int(15) NOT NULL,
+  `TELEPON_SEKOLAH` varchar(15) NOT NULL,
   `HOBI` varchar(15) NOT NULL,
   `TGL_BUAT` datetime NOT NULL,
   `TGL_UBAH` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
@@ -171,12 +161,8 @@ CREATE TABLE `datasiswa` (
 --
 
 INSERT INTO `datasiswa` (`ID_SISWA`, `NAMA_LENGKAP`, `NAMA_PANGGILAN`, `TEMPAT_LAHIR`, `TGL_LAHIR`, `JENIS_KELAMIN`, `TINGGI_BADAN`, `BERAT_BADAN`, `PANJANG_TANGAN`, `PANJANG_KAKI`, `AGAMA`, `ALAMAT_RUMAH`, `KODE_POS_RUMAH`, `TELEPON_RUMAH`, `ASAL_SEKOLAH`, `KELAS_JURUSAN`, `ALAMAT_SEKOLAH`, `KODE_POS_SEKOLAH`, `TELEPON_SEKOLAH`, `HOBI`, `TGL_BUAT`, `TGL_UBAH`, `STATUS`, `KETERAMPILAN_KHUSUS`, `PENGHARGAAN_SEKOLAH`, `PENGHARGAAN_KECAMATAN`, `PENGHARGAAN_KAB_KOTA`, `PENGHARGAAN_PROVINSI`, `PENGHARGAAN_NASIONAL`, `PENGHARGAAN_INTERNASIONAL`) VALUES
-(1, 'Emma Yuan', 'Emma', 'Beijing', '2009-09-09', 'Perempuan', '168', '50', '50', '50', 'Konghucu', 'Beijing, China', '17890', 55555, 'University Beijing', 'Business', 'Beijing', '17906', 821912047, 'swimming', '2025-05-04 06:41:29', '2025-05-07 02:31:57', 'DITOLAK', 'Reading', '', 'juara 1 Masak', '', '', '', ''),
-(2, 'Viona Snow Etherland', 'vivi', 'Etherland', '2001-01-01', 'Perempuan', '180', '50', '50', '50', 'Kristen Katolik', 'barat', '5678', 1234, 'bojong gede', 'masako', 'utara', '75678', 87654567, 'renang', '2025-05-04 06:52:58', '2025-05-07 02:31:04', 'BELUM DIVERIFIKASI', 'jatuh', '', '', '', '', '', ''),
-(3, 'fgvhbjn', 'kjhgfb', 'iuytrdcvb', '2007-08-08', '', '9876', '987', '976', '9876', 'Kristen Protestan', 'iuydcvb', '98', 987654, 'iuytfn', 'iuytcvb', 'iuytvbn', '987', 87, 'hgv', '2025-05-06 05:25:23', '2025-05-07 02:31:07', 'BELUM DIVERIFIKASI', 'iuygfvb', '', '', '', '', '', ''),
-(4, 'hgfcb', 'wertyu', 'fgm', '2006-06-01', '', '876', '7', '876', '9876', 'Kristen Protestan', 'jhgfc ', '87', 987654, 'iuygfn', 'oiuytd', 'iuyfdcvbn', '76', 98765, 'iufcvbn', '2025-05-06 05:26:49', '2025-05-07 02:31:09', 'BELUM DIVERIFIKASI', 'iugfcvbn', '', '', '', '', '', ''),
-(5, 'oiuytdsxcvbn', 'ugfcvbnm', 'ogfcghjk', '2004-08-08', 'Perempuan', '567', '456', '67', '67', 'Hindu', 'dfghj', '56', 456, 'sdfghj', 'iuyf ', 'wertyui', '876', 987654, 'iugfvbn', '2025-05-06 05:27:49', '2025-05-07 02:31:11', 'BELUM DIVERIFIKASI', 'iuytfdc', '', '', '', '', '', ''),
-(6, 'iugfcvbn', 'hdvhxbcncb', 'chcvxhjdh', '2003-01-01', 'Perempuan', '7865', '778', '784', '7656', 'Kristen Katolik', 'hvhdvhg', '454', 76578, 'fhcuuvu', 'uvgcj', 'xbcgy', '46548', 97544874, 'kucg', '2025-05-06 05:28:50', '2025-05-07 02:31:13', 'BELUM DIVERIFIKASI', 'uvrc hf', '', '', '', '', '', '');
+(9, 'Huria Dhahika Usman', 'Heru', 'Sofifi', '2006-03-23', 'Perempuan', '155', '60', '50', '50', 'Islam', 'Desa Somahode', '18976', '082191208347', 'SD Somahode', '6', 'Desa Somahode', '18756', '082198465789', 'Main Voli', '2025-05-17 15:41:25', '2025-06-16 04:59:43', 'DITOLAK', 'Menari', '', '', '', 'Juara Main Voli', '', ''),
+(13, 'Qaulan Sakila Usman', 'Ulan', 'Tidore', '2003-09-30', 'Perempuan', '154', '62', '40', '40', 'Islam', 'Kelurahan Topo', '18967', '082191208342', 'SMAN 3 TIDORE KEPULAUAN', 'IPA', 'Gamtufkange', '18974', '08283745698', '', '2025-06-20 23:24:32', '2025-06-20 21:24:32', 'BELUM DIVERIFIKASI', '', '', '', '', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -199,7 +185,7 @@ CREATE TABLE `dokumen` (
 --
 
 INSERT INTO `dokumen` (`ID_DOKUMEN`, `ID_SISWA`, `AKTA`, `KARTU_KELUARGA`, `IJAZAH`, `SKL`, `BUKU_PIP`) VALUES
-(1, 1, 'AKTA_1_1746325710.jpg', 'KARTU_KELUARGA_1_1746325710.pdf', '', '', '');
+(1, 9, 'AKTA_9_1748342139.pdf', 'KARTU_KELUARGA_9_1748342139.pdf', 'IJAZAH_9_1748342139.pdf', 'SKL_9_1748342139.pdf', '');
 
 --
 -- Indexes for dumped tables
@@ -216,8 +202,7 @@ ALTER TABLE `administrasi`
 -- Indeks untuk tabel `dataadmin`
 --
 ALTER TABLE `dataadmin`
-  ADD PRIMARY KEY (`ID_ADMIN`),
-  ADD UNIQUE KEY `UNIQUE_ADMIN` (`USERNAME`);
+  ADD PRIMARY KEY (`ID_ADMIN`);
 
 --
 -- Indeks untuk tabel `dataortu_wali`
@@ -247,7 +232,7 @@ ALTER TABLE `dokumen`
 -- AUTO_INCREMENT untuk tabel `administrasi`
 --
 ALTER TABLE `administrasi`
-  MODIFY `ID_BAYAR` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `ID_BAYAR` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT untuk tabel `dataadmin`
@@ -259,19 +244,19 @@ ALTER TABLE `dataadmin`
 -- AUTO_INCREMENT untuk tabel `dataortu_wali`
 --
 ALTER TABLE `dataortu_wali`
-  MODIFY `ID_ORTU_WALI` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `ID_ORTU_WALI` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT untuk tabel `datasiswa`
 --
 ALTER TABLE `datasiswa`
-  MODIFY `ID_SISWA` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `ID_SISWA` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT untuk tabel `dokumen`
 --
 ALTER TABLE `dokumen`
-  MODIFY `ID_DOKUMEN` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `ID_DOKUMEN` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
