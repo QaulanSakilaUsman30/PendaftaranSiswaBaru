@@ -103,11 +103,6 @@ $data = mysqli_query($conn, $query) or die(mysqli_error($conn));
                                             <td><?= date('d-m-Y', strtotime($row['TGL_BUAT'])); ?></td>
                                             <td class="text-center" width="120px">
                                                 <div style="display: flex; gap: 10px;">
-                                                    <a href="index.php?ke=detailPengguna&id=<?= $row['ID_ADMIN']; ?>" class="btn btn-warning my-2">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
-                                                            <path fill="white" d="M572.5 241.4C518.3 135.6 410.9 64 288 64S57.7 135.6 3.5 241.4a32.4 32.4 0 0 0 0 29.2C57.7 376.4 165.1 448 288 448s230.3-71.6 284.5-177.4a32.4 32.4 0 0 0 0-29.2zM288 400a144 144 0 1 1 144-144 143.9 143.9 0 0 1 -144 144zm0-240a95.3 95.3 0 0 0 -25.3 3.8 47.9 47.9 0 0 1 -66.9 66.9A95.8 95.8 0 1 0 288 160z"/>
-                                                        </svg>
-                                                    </a>
                                                     <a href="index.php?ke=ubahPengguna&id=<?= $row['ID_ADMIN']; ?>" class="btn btn-primary my-2">
                                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                                                             <path fill="white" d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4 .4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"/>

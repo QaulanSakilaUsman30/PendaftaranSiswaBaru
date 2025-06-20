@@ -757,25 +757,24 @@ $data_ortu_wali = mysqli_fetch_assoc($query_detail_ortu);
                                 <div class="form-body">
                                     <div class="row">
                                       <div class="buttons">
-                                          <a href="<?php echo $upload_dir . (isset($data_dokumen['AKTA']) ? $data_dokumen['AKTA'] : 'AKTA_' . $id_siswa_login . '.pdf && .docx'); ?>" target="_blank" class="btn btn-primary rounded-pill btn-lg <?php echo (empty($data_dokumen['AKTA']) ?  : ''); ?>">
-                                              Show Akta Kelahiran
-                                          </a>
-                                          <a href="<?php echo $upload_dir . (isset($data_dokumen['KARTU_KELUARGA']) ? $data_dokumen['KARTU_KELUARGA'] : 'KARTU_KELUARGA_' . $id_siswa_login . '.jpg'); ?>" target="_blank" class="btn btn-secondary rounded-pill btn-lg <?php echo (empty($data_dokumen['KARTU_KELUARGA']) ? : ''); ?>">
-                                              Show Kartu Keluarga
-                                          </a>
-                                          <a href="<?php echo $upload_dir . (isset($data_dokumen['IJAZAH']) ? $data_dokumen['IJAZAH'] : 'IJAZAH_' . $id_siswa_login . '.pdf'); ?>"
-                                              target="_blank" class="btn btn-info rounded-pill btn-lg <?php echo (empty($data_dokumen['IJAZAH']) ?  : ''); ?>">
-                                              Show Ijazah
-                                          </a>
-                                          <a href="<?php echo $upload_dir . (isset($data_dokumen['SKL']) ? $data_dokumen['SKL'] : 'SKL_' . $id_siswa_login . '.pdf'); ?>"
-                                              target="_blank" class="btn btn-warning rounded-pill btn-lg <?php echo (empty($data_dokumen['SKL']) ?  : ''); ?>">
-                                              Show SKL
-                                          </a>
-                                          <a href="<?php echo $upload_dir . (isset($data_dokumen['BUKU_PIP']) ? $data_dokumen['BUKU_PIP'] : 'BUKU_PIP_' . $id_siswa_login . '.pdf'); ?>"
-                                              target="_blank" class="btn btn-danger rounded-pill btn-lg <?php echo (empty($data_dokumen['BUKU_PIP']) ? : ''); ?>">
-                                              Show Buku PIP
-                                          </a>
-                                      </div>
+                                        <?php
+                                        function renderButton($docKey, $label, $upload_dir, $data_dokumen, $id_siswa_login, $btnClass) {
+                                            if (!empty($data_dokumen[$docKey])) {
+                                                $filePath = $upload_dir . $data_dokumen[$docKey];
+                                                echo '<a href="' . $filePath . '" target="_blank" class="btn ' . $btnClass . ' rounded-pill btn-lg">' . $label . '</a>';
+                                            } else {
+                                                // Jika dokumen belum diupload, tombol memicu alert
+                                                echo '<a href="javascript:void(0);" onclick="alert(\'Dokumen ' . $label . ' belum diupload.\');" class="btn ' . $btnClass . ' rounded-pill btn-lg">' . $label . '</a>';
+                                            }
+                                        }
+
+                                        renderButton('AKTA', 'Show Akta Kelahiran', $upload_dir, $data_dokumen, $id_siswa_login, 'btn-primary');
+                                        renderButton('KARTU_KELUARGA', 'Show Kartu Keluarga', $upload_dir, $data_dokumen, $id_siswa_login, 'btn-secondary');
+                                        renderButton('IJAZAH', 'Show Ijazah', $upload_dir, $data_dokumen, $id_siswa_login, 'btn-info');
+                                        renderButton('SKL', 'Show SKL', $upload_dir, $data_dokumen, $id_siswa_login, 'btn-warning');
+                                        renderButton('BUKU_PIP', 'Show Buku PIP', $upload_dir, $data_dokumen, $id_siswa_login, 'btn-danger');
+                                        ?>
+                                    </div>
                                 </div>
                             </form>
                         </div>

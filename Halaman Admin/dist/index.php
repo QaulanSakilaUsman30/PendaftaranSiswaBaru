@@ -64,7 +64,7 @@ if (empty($_SESSION['sID_ADMIN'])) {
                         <li class="sidebar-title">Menu</li>
                         <?php
                         $currentPage = isset($_GET['ke']) ? $_GET['ke'] : '';
-                        $masterDataActive = in_array($currentPage, ['datasiswa', 'pembayaran','siswaditerima']);
+                        $masterDataActive = in_array($currentPage, ['datasiswa', 'pembayaran','siswaditerima','pengguna']);
                         ?>
 
                         <li class="sidebar-item <?php if ($currentPage == 'dashboard') echo 'active'; ?>">
@@ -89,7 +89,7 @@ if (empty($_SESSION['sID_ADMIN'])) {
                                 <li class="submenu-item <?php if ($currentPage == 'pembayaran') echo 'active'; ?>">
                                     <a href="index.php?ke=pembayaran">Data Pembayaran</a>
                                 </li>
-                                <li class="submenu-item <?php if ($currentPage == 'pembayaran') echo 'active'; ?>">
+                                <li class="submenu-item <?php if ($currentPage == 'pengguna') echo 'active'; ?>">
                                     <a href="index.php?ke=pengguna">Data Admin</a>
                                 </li>
                             </ul>
@@ -154,9 +154,6 @@ if (empty($_SESSION['sID_ADMIN'])) {
 
                         
                         //datapengguna
-                    case 'detailPengguna':
-                        include "Pengguna/detailPengguna.php"; 
-                        break;
                     case 'tambahPengguna':
                         include "Pengguna/tambahPengguna.php"; 
                         break;  

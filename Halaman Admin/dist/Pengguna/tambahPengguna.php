@@ -28,29 +28,36 @@
                 </div>
                 <div class="card-body">
                 <?php
-                    include '../../koneksi.php'; // Pastikan koneksi dilakukan di atas
+                include '../../koneksi.php';
 
-                    if (isset($_POST['tambahDataPengguna'])) {
+                if (isset($_POST['tambahDataPengguna'])) {
                     $nama_admin = mysqli_real_escape_string($conn, $_POST['NAMA_ADMIN']);
                     $TELEPON = mysqli_real_escape_string($conn, $_POST['TELEPON']);
                     $username = mysqli_real_escape_string($conn, $_POST['USERNAME']);
                     $raw_password = $_POST['PASSWORD'];
-                    $password = md5($raw_password); // ← ubah hash ke MD5 di sini
+                    $password = md5($raw_password);
                     $gambar = $_FILES['GAMBAR']['name'];
                     $tgl_buat = date('Y-m-d H:i:s');
 
+                    // ✅ Validasi field kosong
+                    if (empty($nama_admin) || empty($TELEPON) || empty($username) || empty($raw_password) || empty($gambar)) {
+                        echo "<script>alert('Semua field wajib diisi.'); window.location.href='index.php?ke=tambahPengguna';</script>";
+                        exit;
+                    }
+
+                    // Proses upload gambar
                     $target_dir = "Pengguna/uploads/";
                     $target_file = $target_dir . basename($gambar);
                     $uploadOk = 1;
                     $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
-                    if ($_FILES['GAMBAR']['size'] > 25165824) {
-                        echo "Maaf, ukuran file terlalu besar.";
+                    if ($_FILES['GAMBAR']['size'] > 3145728) { // 3MB
+                        echo "<script>alert('Ukuran file terlalu besar. Maksimal 3MB.');</script>";
                         $uploadOk = 0;
                     }
 
-                    if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
-                        echo "Maaf, hanya file JPG, JPEG, & PNG yang diperbolehkan.";
+                    if (!in_array($imageFileType, ['jpg', 'jpeg', 'png'])) {
+                        echo "<script>alert('Hanya file JPG, JPEG, dan PNG yang diperbolehkan.');</script>";
                         $uploadOk = 0;
                     }
 
@@ -58,7 +65,6 @@
                         if (move_uploaded_file($_FILES['GAMBAR']['tmp_name'], $target_file)) {
                             $sql = "INSERT INTO dataadmin (NAMA_ADMIN, TELEPON, USERNAME, PASSWORD, GAMBAR, TGL_BUAT)
                                     VALUES ('$nama_admin', '$TELEPON', '$username', '$password', '$gambar', '$tgl_buat')";
-
                             if ($conn->query($sql) === TRUE) {
                                 header('Location: index.php?ke=pengguna');
                                 exit();
@@ -66,13 +72,12 @@
                                 echo "Error: " . $sql . "<br>" . $conn->error;
                             }
                         } else {
-                            echo "Maaf, terjadi kesalahan saat mengupload gambar.";
+                            echo "<script>alert('Terjadi kesalahan saat mengupload gambar.');</script>";
                         }
                     }
                 }
+                ?>
 
-
-                    ?>
                     <div class="section-title mt-0 ml-4">Tambah Data Admin</div>
                     <form class="needs-validation" novalidate action="" method="POST" enctype="multipart/form-data">
                         <div class="modal-body">

@@ -62,6 +62,15 @@ if (!$result) {
     die("Query gagal: " . mysqli_error($conn));
 }
 
+if (mysqli_num_rows($result) == 0) {
+    echo "<script>
+    alert('Tidak ada data untuk dicetak');
+    window.history.back();
+</script>";
+;
+    exit();
+}
+
 // Instantiate and use the Dompdf class
 $dompdf = new Dompdf();
 $html = '

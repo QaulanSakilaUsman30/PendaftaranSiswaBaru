@@ -1,4 +1,7 @@
 <?php
+session_start();
+
+
 include '../../koneksi.php'; // Pastikan path ke koneksi benar
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['tambahdokumen'])) {
@@ -28,10 +31,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['tambahdokumen'])) {
         'BUKU_PIP' => 'BUKU_PIP',
     ];
 
-    // Debugging output untuk melihat data $_FILES
-    echo "<pre>FILES Array:\n";
-    var_dump($_FILES);
-    echo "</pre>";
+    // Format file yang diizinkan
+    $allowed_extensions = ['pdf', 'jpg', 'jpeg', 'png', 'doc', 'docx'];
 
     foreach ($file_inputs as $input_name => $db_column) {
         if (isset($_FILES[$input_name]) && $_FILES[$input_name]['error'] == 0) {
@@ -42,10 +43,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['tambahdokumen'])) {
             $new_file_name = $db_column . '_' . $id_siswa . '_' . time() . '.' . $file_extension;
             $target_file = $upload_dir . $new_file_name;
 
-            // Batasan ukuran file (contoh 25MB)
-            if ($file_size > 25000000) {
+            // Batasan ukuran file (contoh 15MB)
+            if ($file_size > 15000000) {
                 $upload_status = false;
-                $upload_messages[] = "Ukuran file untuk $db_column ($file_name) terlalu besar (maks. 25MB).";
+                $upload_messages[] = "Ukuran file untuk $db_column ($file_name) terlalu besar (maks. 15MB).";
+            }
+
+            // Validasi format file
+            if (!in_array($file_extension, $allowed_extensions)) {
+                $upload_status = false;
+                $upload_messages[] = "Format file untuk $db_column ($file_name) tidak didukung. Hanya diperbolehkan: " . implode(", ", $allowed_extensions) . ".";
             }
 
             if ($upload_status) {
@@ -63,13 +70,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['tambahdokumen'])) {
         }
     }
 
-    // Debugging output untuk melihat data $uploaded_files dan $upload_messages
-    echo "<pre>Uploaded Files Array:\n";
-    var_dump($uploaded_files);
-    echo "\nUpload Messages Array:\n";
-    var_dump($upload_messages);
-    echo "</pre>";
-
     if ($upload_status) {
         // Cek dokumen yang sudah ada
         $sql_check = "SELECT * FROM dokumen WHERE ID_SISWA = '$id_siswa'";
@@ -82,12 +82,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['tambahdokumen'])) {
                 AKTA = IF('$uploaded_files[AKTA]' != '', '$uploaded_files[AKTA]', AKTA),
                 KARTU_KELUARGA = IF('$uploaded_files[KARTU_KELUARGA]' != '', '$uploaded_files[KARTU_KELUARGA]', KARTU_KELUARGA),
                 IJAZAH = IF('$uploaded_files[IJAZAH]' != '', '$uploaded_files[IJAZAH]', IJAZAH),
-                SKL = IF('$uploaded_files[SKL]' !=                 '', '$uploaded_files[SKL]', SKL),
+                SKL = IF('$uploaded_files[SKL]' != '', '$uploaded_files[SKL]', SKL),
                 BUKU_PIP = IF('$uploaded_files[BUKU_PIP]' != '', '$uploaded_files[BUKU_PIP]', BUKU_PIP)
                 WHERE ID_SISWA = '$id_siswa'";
 
             if (mysqli_query($conn, $update_sql)) {
-                header('Location: ../index.php?ke=dashboard&id=' . $id_siswa . '&pesan=berhasil_update_dokumen');
+                $_SESSION['pesan'] = "Dokumen berhasil diupdate.";
+                header('Location: ../index.php?ke=dashboard&id=' . $id_siswa);
                 exit();
             } else {
                 echo "Error: " . $update_sql . "<br>" . mysqli_error($conn);
@@ -110,7 +111,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['tambahdokumen'])) {
                     VALUES ('$id_siswa', '$akta', '$kartu_keluarga', '$ijazah', '$skl', '$buku_pip')";
 
             if (mysqli_query($conn, $sql)) {
-                header('Location: ../index.php?ke=dashboard&id=' . $id_siswa . '&pesan=berhasil_upload_dokumen');
+                $_SESSION['pesan'] = "Dokumen berhasil diunggah.";
+                header('Location: ../index.php?ke=dashboard&id=' . $id_siswa);
                 exit();
             } else {
                 echo "Error: " . $sql . "<br>" . mysqli_error($conn);
@@ -123,11 +125,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['tambahdokumen'])) {
             }
         }
     } else {
-        echo '<div class="alert alert-danger">';
-        foreach ($upload_messages as $message) {
-            echo $message . '<br>';
-        }
-        echo '</div>';
+        $_SESSION['pesan'] = implode("<br>", $upload_messages);
+        header('Location: ../index.php?ke=dashboard&id=' . $id_siswa);
+        exit();
         // Anda mungkin ingin menambahkan link kembali ke form atau halaman sebelumnya
     }
 

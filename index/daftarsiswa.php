@@ -78,6 +78,7 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" type="image/x-icon" href="assets/img/logo/loder.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
@@ -332,7 +333,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <form class="form-contact contact_form multi-step-form"  method="POST" id="contactForm" novalidate="novalidate">
+                    <form class="form-contact contact_form multi-step-form" method="POST" id="contactForm" novalidate="novalidate">
                         <div class="form-container">
                             <ul class="progressbar">
                                 <li class="active" onclick="showStep(1)">Ketentuan</li>
@@ -636,6 +637,23 @@
 
 <script src="./assets/js/plugins.js"></script>
 <script src="./assets/js/main.js"></script>
+<script>
+    document.getElementById('contactForm').addEventListener('submit', function (event) {
+        // Cek validitas form
+        if (!this.checkValidity()) {
+            event.preventDefault(); // Hentikan pengiriman
+            event.stopPropagation(); // Hentikan bubbling
+
+            // Tambahkan kelas Bootstrap untuk validasi visual
+            this.classList.add('was-validated');
+            alert("Harap lengkapi semua kolom yang wajib diisi!");
+        } else {
+            // Form valid, biarkan lanjut submit
+            this.classList.add('was-validated');
+        }
+    }, false);
+</script>
+
 <script>
     const stepForms = document.querySelectorAll('.step-form');
     const progressbarItems = document.querySelectorAll('.progressbar li');

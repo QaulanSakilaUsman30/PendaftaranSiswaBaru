@@ -44,7 +44,7 @@
                                            $jumlah_diverifikasi = mysqli_num_rows($query_diverifikasi);
                                             ?>
                                             <div class="col-md-8">
-                                                <h6 class="text-muted font-semibold">Total Pendaftar yang Terverifikasi</h6>
+                                                <h6 class="text-muted font-semibold">Total yang Terverifikasi</h6>
                                                 <h6 class="font-extrabold mb-0"><?php echo "$jumlah_diverifikasi" ?></h6>
                                             </div>
                                         </div>

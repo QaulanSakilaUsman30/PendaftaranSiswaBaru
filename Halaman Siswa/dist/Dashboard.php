@@ -16,6 +16,7 @@ function clean_input($data) {
     global $conn;
     return mysqli_real_escape_string($conn, trim($data));
 }
+
 // Ambil status verifikasi siswa dari database
 $query_status = "SELECT STATUS FROM datasiswa WHERE ID_SISWA = '$ID_SISWA_LOGGED_IN'";
 $result_status = mysqli_query($conn, $query_status);
@@ -96,6 +97,17 @@ if (isset($_POST['tambahdata'])) {
     <div class="page-heading">
         <h3>Selamat Datang di Website Kami <?php echo $_SESSION['namaSiswa'];?></h3>
     </div>
+    <?php
+      if (isset($_SESSION['pesan'])) {
+        // Tentukan tipe alert
+        $class = (strpos($_SESSION['pesan'], 'berhasil') !== false) ? 'success' : 'danger';
+        echo '<div class="alert alert-' . $class . ' alert-dismissible fade show" role="alert">';
+        echo $_SESSION['pesan'];
+        echo '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+        echo '</div>';
+      unset($_SESSION['pesan']); // Hapus setelah ditampilkan agar tidak muncul terus
+    }
+    ?>
     <div class="page-content" style="margin-bottom:32%;">
         <section class="row">
             <div class="col-12 col-lg-12">
@@ -128,7 +140,7 @@ if (isset($_POST['tambahdata'])) {
                                                 </p>';
                                             } elseif ($status_verifikasi == 'DITOLAK') {
                                                 echo '<p class="accordion-description" style="text-align:justify;">
-                                                Kami menyesal untuk menginformasikan bahwa pendaftaran siswa Anda telah Ditolak. Kami mohon agar Anda segera melengkapi dokumen yang diperlukan dan mengirimkannya kembali kepada kami. Jika ada yang ditanyakan silahkan hubungi admin sekolah <a href="https://wa.me/081384367417" target="_blank">Hubungi Kami di WhatsApp</a>
+                                                Kami mohon maaf, pendaftaran siswa Anda telah Ditolak. Mohon periksa kembali data Anda, lengkapi dokumen yang diperlukan, dan perbaiki kesalahan pengisian data jika ada. Setelah semua diperbaiki, silakan kirimkan ulang kepada kami.  Jika ada hal yang ingin ditanyakan, silakan hubungi admin sekolah untuk mendapatkan bantuan lebih lanjut. <a href="https://wa.me/081384367417" target="_blank">Hubungi Kami di WhatsApp</a> Terima kasih atas perhatian dan kerja samanya.
                                                 </p>';
                                             } elseif ($status_verifikasi == 'DIVERIFIKASI') {
                                                 echo '<div class="accordion-description" style=" font-size: 20px; line-height: 1.5;">
@@ -207,7 +219,7 @@ if (isset($_POST['tambahdata'])) {
                                                 <div id="item1-content" class="accordion-content show">
                                                     <div class="row">
                                                         <div class="col-md-12">
-                                                            <form action="" method="POST">
+                                                            <form action="" method="POST" class="needs-validation" novalidate>
                                                                 <input type="hidden" name="ID_SISWA"
                                                                     value="<?php echo $ID_SISWA_LOGGED_IN; ?>">
 
@@ -528,8 +540,6 @@ if (isset($_POST['tambahdata'])) {
                                                                             <option value="Buddha">Buddha</option>
                                                                             <option value="Konghucu">Konghucu</option>
                                                                         </select>
-                                                                        <div class="valid-feedback"> Bagus! </div>
-                                                                        <div class="invalid-feedback"> Wajib Diisi! </div>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-3">
@@ -568,8 +578,6 @@ if (isset($_POST['tambahdata'])) {
                                                                     <div class="form-group">
                                                                         <label>Hubungan dengan Siswa</label>
                                                                         <input type="text" class="form-control" name="HUBUNGAN_WALI">
-                                                                        <div class="valid-feedback"> Bagus! </div>
-                                                                        <div class="invalid-feedback"> Wajib Diisi! </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -600,20 +608,24 @@ if (isset($_POST['tambahdata'])) {
                                                 <div id="item1-content" class="accordion-content show">
                                                     <div class="row">
                                                         <div class="col-md-12">
-                                                            <form action="proses_dokumen.php" method="POST" enctype="multipart/form-data">
-                                                                <input type="hidden" name="ID_SISWA"
-                                                                    value="<?php echo $ID_SISWA_LOGGED_IN; ?>">
-                                                  
+                                                            <form action="proses_dokumen.php" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+                                                                <input type="hidden" name="ID_SISWA" value="<?php echo $ID_SISWA_LOGGED_IN; ?>">
+                                                                
+
                                                             <div class="card-body">
                                                                 <div class="row">
                                                                     <div class="col-lg-6 col-md-12">
                                                                         <div class="mb-3">
                                                                             <label for="aktaKelahiran" class="form-label">Akta Kelahiran</label>
-                                                                            <input class="form-control" type="file" id="aktaKelahiran" name="AKTA">
+                                                                            <input class="form-control" type="file" id="aktaKelahiran" name="AKTA" required>
+                                                                            <div class="valid-feedback"> Bagus! </div>
+                                                                            <div class="invalid-feedback"> Wajib Diisi! </div>
                                                                         </div>
                                                                         <div class="mb-3">
                                                                             <label for="kartuKeluarga" class="form-label">Kartu Keluarga</label>
-                                                                            <input class="form-control" type="file" id="kartuKeluarga" name="KARTU_KELUARGA">
+                                                                            <input class="form-control" type="file" id="kartuKeluarga" name="KARTU_KELUARGA" required>
+                                                                            <div class="valid-feedback"> Bagus! </div>
+                                                                            <div class="invalid-feedback"> Wajib Diisi! </div>
                                                                         </div>
                                                                         <div class="mb-3">
                                                                             <label for="ijazah" class="form-label">Ijazah (bila sudah ada)</label>
@@ -623,7 +635,9 @@ if (isset($_POST['tambahdata'])) {
                                                                     <div class="col-lg-6 col-md-12">
                                                                         <div class="mb-3">
                                                                             <label for="skl" class="form-label">Surat Keterangan Lulus (SKL)</label>
-                                                                            <input class="form-control" type="file" id="skl" name="SKL">
+                                                                            <input class="form-control" type="file" id="skl" name="SKL" required>
+                                                                            <div class="valid-feedback"> Bagus! </div>
+                                                                            <div class="invalid-feedback"> Wajib Diisi! </div>
                                                                         </div>
                                                                         <div class="mb-3">
                                                                             <label for="bukuPip" class="form-label">Buku PIP (bagi yang memiliki)</label>
@@ -800,6 +814,21 @@ if (isset($_POST['tambahdata'])) {
             });
 
         });
+        </script>
+        <script>
+            (() => {
+            'use strict'
+            const forms = document.querySelectorAll('.needs-validation')
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+                form.classList.add('was-validated')
+                }, false)
+            })
+            })()
         </script>
         <link rel="stylesheet" href="[https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css](https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css)">
  

@@ -9,6 +9,7 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
 
     if ($query_delete) {
         // Jika penghapusan berhasil, redirect kembali ke halaman daftar siswa
+        
         header('location: index.php?ke=pengguna'); // Sesuaikan path jika perlu
         exit();
     } else {

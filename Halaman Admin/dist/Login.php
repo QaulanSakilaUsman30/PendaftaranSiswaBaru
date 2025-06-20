@@ -24,12 +24,19 @@
                     </div>
                     <h1 class="auth-title" >Log in Admin</h1>
                     <p class="auth-subtitle mb-5" style=" font-size: 20px">Silahkan isi Username dan Password untuk login</p>
-                    <?php
+                   <?php
                     session_start();
                     include '../../koneksi.php';
 
                     if (isset($_POST['loginData'])) {
-                        if (isset($_POST['USERNAME']) && isset($_POST['PASSWORD'])) {
+                        $usernameEmpty = empty($_POST['USERNAME']);
+                        $passwordEmpty = empty($_POST['PASSWORD']);
+
+                        if ($usernameEmpty && $passwordEmpty) {
+                            echo "<p>Username dan password belum diisi!</p>";
+                        } elseif ($usernameEmpty || $passwordEmpty) {
+                            echo "<p>Silahkan lengkapi username dan password terlebih dahulu!</p>";
+                        } else {
                             $USERNAME = $_POST['USERNAME'];
                             $PASSWORD = md5($_POST['PASSWORD']);  // Hash password dengan MD5
 
@@ -46,11 +53,10 @@
                             } else {
                                 echo "<p>Username dan password salah!</p>";
                             }
-                        } else {
-                            echo "<p>Username dan password belum diisi!</p>";
                         }
                     }
                     ?>
+
 
                     <form method="POST">
                         <label for="" class="mb-2"><b>Username</b></label>

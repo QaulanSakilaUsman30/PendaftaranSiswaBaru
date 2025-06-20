@@ -126,36 +126,38 @@ if (isset($_POST['tambahDataPembayaran'])) {
                                 </select>
                                 <div class="invalid-feedback">Harap pilih Nama Siswa.</div>
                             </div>
+
                             <div class="form-group">
                                 <label>Nama Bank</label>
-                                <input type="text" class="form-control" name="NAMA_BANK" required minlength="16">
-                                <div class="valid-feedback"> Baguss! </div>
+                                <input type="text" class="form-control" name="NAMA_BANK" required>
+                                <div class="invalid-feedback">Harap isi Nama Bank.</div>
                             </div>
+
                             <div class="form-group">
-                                <label>Status Pembayaran</label>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="STATUS" id="BELUM LUNAS" value="BELUM LUNAS">
-                                    <label class="form-check-label" for="belum">
-                                        Belum Lunas
-                                    </label>
+                                <label>Status Pembayaran</label><br>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="STATUS" id="BELUM_LUNAS" value="BELUM LUNAS" required>
+                                    <label class="form-check-label" for="BELUM_LUNAS">Belum Lunas</label>
                                 </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="STATUS" id="LUNAS" value="LUNAS">
-                                    <label class="form-check-label" for="lunas">
-                                        Lunas
-                                    </label>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="STATUS" id="LUNAS" value="LUNAS" required>
+                                    <label class="form-check-label" for="LUNAS">Lunas</label>
                                 </div>
+                                <div class="invalid-feedback d-block">Silakan pilih status pembayaran.</div>
                             </div>
+
                             <div class="form-group">
                                 <label>Jumlah Biaya</label>
-                                <input type="number" class="form-control" name="JUMLAH_BIAYA" required minlength="16">
-                                <div class="valid-feedback"> Baguss! </div>
+                                <input type="number" class="form-control" name="JUMLAH_BIAYA" required min="1">
+                                <div class="invalid-feedback">Harap masukkan jumlah biaya yang valid.</div>
                             </div>
+
                             <div class="form-group">
                                 <label>Bukti Transfer</label>
-                                <input name="BUKTI_TRANSFER" accept="image/png,image/jpeg,image/jpg" type="file" id="BUKTI_TRANSFER" class="form-control" autocomplete="off"/> *max 3mb
-                                <div class="valid-feedback"> Baguss! </div>
+                                <input name="BUKTI_TRANSFER" accept="image/png,image/jpeg,image/jpg" type="file" id="BUKTI_TRANSFER" class="form-control" />
+                                <small class="form-text text-muted">*Optional. Maksimal 3MB (jpg/jpeg/png).</small>
                             </div>
+
                             <br>
                             <div class="modal-footer bg-whitesmoke br">
                                 <a href="index.php?ke=pembayaran" type="button" class="btn btn-secondary">Batal</a>
@@ -163,7 +165,25 @@ if (isset($_POST['tambahDataPembayaran'])) {
                             </div>
                         </div>
                     </form>
-                    </div>
+                </div>
+                <script>
+                    // Bootstrap style client-side validation
+                    (function () {
+                        'use strict';
+                        window.addEventListener('load', function () {
+                        var forms = document.getElementsByClassName('needs-validation');
+                        Array.prototype.filter.call(forms, function (form) {
+                            form.addEventListener('submit', function (event) {
+                            if (form.checkValidity() === false) {
+                                event.preventDefault();
+                                event.stopPropagation();
+                            }
+                            form.classList.add('was-validated');
+                            }, false);
+                        });
+                        }, false);
+                    })();
+                </script>
             </div>
         </div>
     </div>
