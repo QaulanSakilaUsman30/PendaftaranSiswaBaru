@@ -22,7 +22,7 @@ $totalPages = ceil($totalRecords / $resultsPerPage);
 
 // Query to get the data with pagination and search
 $query = "
-    SELECT ID_SISWA, NAMA_LENGKAP, NAMA_PANGGILAN, TGL_LAHIR, JENIS_KELAMIN, STATUS 
+    SELECT ID_SISWA, NOMOR_PENDAFTARAN,NAMA_LENGKAP, NAMA_PANGGILAN, TGL_LAHIR, JENIS_KELAMIN, STATUS 
     FROM datasiswa 
     WHERE (STATUS = 'BELUM DIVERIFIKASI' OR STATUS = 'DITOLAK') AND (NAMA_LENGKAP LIKE '%$searchTerm%' OR NAMA_PANGGILAN LIKE '%$searchTerm%' OR STATUS LIKE '%$searchTerm%')
     LIMIT $offset, $resultsPerPage
@@ -76,6 +76,7 @@ $data = mysqli_query($conn, $query) or die(mysqli_error($conn));
                             <thead>
                                 <tr>
                                     <th class="text-center"> No </th>
+                                    <th>No. Pendaftaran </th>
                                     <th>Nama Lengkap</th>
                                     <th>Nama Panggilan</th>
                                     <th>Tanggal Lahir</th>
@@ -92,6 +93,7 @@ $data = mysqli_query($conn, $query) or die(mysqli_error($conn));
                                 ?>
                                         <tr>
                                             <td><?= $no++; ?></td>
+                                            <td><?= htmlspecialchars($row['NOMOR_PENDAFTARAN']); ?></td>
                                             <td><?= htmlspecialchars($row['NAMA_LENGKAP']); ?></td>
                                             <td><?= htmlspecialchars($row['NAMA_PANGGILAN']); ?></td>
                                             <td><?= htmlspecialchars($row['TGL_LAHIR']); ?></td>

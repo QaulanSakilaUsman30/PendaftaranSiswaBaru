@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 21 Jun 2025 pada 01.20
+-- Waktu pembuatan: 24 Jun 2025 pada 14.24
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.2.12
 
@@ -32,7 +32,7 @@ CREATE TABLE `administrasi` (
   `ID_SISWA` int(11) NOT NULL,
   `NAMA_BANK` varchar(11) NOT NULL,
   `BUKTI_TRANSFER` varchar(100) NOT NULL,
-  `STATUS` enum('LUNAS','BELUM LUNAS') NOT NULL,
+  `TIPE` enum('CASH','TRANSFER') NOT NULL,
   `TGL_BUAT` datetime NOT NULL,
   `JUMLAH_BIAYA` int(20) NOT NULL,
   `TGL_UBAH` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
@@ -42,8 +42,8 @@ CREATE TABLE `administrasi` (
 -- Dumping data untuk tabel `administrasi`
 --
 
-INSERT INTO `administrasi` (`ID_BAYAR`, `ID_SISWA`, `NAMA_BANK`, `BUKTI_TRANSFER`, `STATUS`, `TGL_BUAT`, `JUMLAH_BIAYA`, `TGL_UBAH`) VALUES
-(1, 9, 'BNI', 'Relasi Tabel.png', 'LUNAS', '2025-05-22 07:56:51', 700000, '2025-05-22 05:56:51');
+INSERT INTO `administrasi` (`ID_BAYAR`, `ID_SISWA`, `NAMA_BANK`, `BUKTI_TRANSFER`, `TIPE`, `TGL_BUAT`, `JUMLAH_BIAYA`, `TGL_UBAH`) VALUES
+(10, 19, 'VGHJK', '', 'TRANSFER', '2025-06-24 14:10:54', 12345, '2025-06-24 12:13:18');
 
 -- --------------------------------------------------------
 
@@ -110,13 +110,6 @@ CREATE TABLE `dataortu_wali` (
   `TGL_UBAH1` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data untuk tabel `dataortu_wali`
---
-
-INSERT INTO `dataortu_wali` (`ID_ORTU_WALI`, `ID_SISWA`, `NAMA_AYAH`, `TEMPAT_LAHIR_AYAH`, `TGL_LAHIR_AYAH`, `AGAMA_AYAH`, `PENDIDIKAN_TERAKHIR_AYAH`, `PEKERJAAN_AYAH`, `ALAMAT_RUMAH_AYAH`, `KODE_POS_AYAH`, `TELEPON_AYAH`, `NAMA_IBU`, `TEMPAT_LAHIR_IBU`, `TGL_LAHIR_IBU`, `AGAMA_IBU`, `PENDIDIKAN_TERAKHIR_IBU`, `PEKERJAAN_IBU`, `ALAMAT_RUMAH_IBU`, `KODE_POS_IBU`, `TELEPON_IBU`, `NAMA_WALI`, `TEMPAT_LAHIR_WALI`, `TGL_LAHIR_WALI`, `AGAMA_WALI`, `PENDIDIKAN_TERAKHIR_WALI`, `PEKERJAAN_WALI`, `ALAMAT_RUMAH_WALI`, `KODE_POS_WALI`, `TELEPON_WALI`, `HUBUNGAN_WALI`, `TGL_BUAT1`, `TGL_UBAH1`) VALUES
-(1, 9, 'Usman Daud', 'Tidore', '1973-12-01', 'Islam', 'D4/S1', 'PNS/Guru', 'Desa Somahode', 18972, '082193645389', 'Julaiha Adam', 'Topo', '1982-05-09', 'Islam', 'SMA/SMK', 'Ibu Rumah Tangga', 'Desa Somahode', 18972, '085468299191', '', '', '0000-00-00', '', '', '', '', 0, '', '', '2025-05-17 15:43:49', '2025-05-17 13:43:49');
-
 -- --------------------------------------------------------
 
 --
@@ -153,16 +146,18 @@ CREATE TABLE `datasiswa` (
   `PENGHARGAAN_KAB_KOTA` varchar(20) NOT NULL,
   `PENGHARGAAN_PROVINSI` varchar(20) NOT NULL,
   `PENGHARGAAN_NASIONAL` varchar(20) NOT NULL,
-  `PENGHARGAAN_INTERNASIONAL` varchar(20) NOT NULL
+  `PENGHARGAAN_INTERNASIONAL` varchar(20) NOT NULL,
+  `USERNAME` varchar(30) NOT NULL,
+  `PASSWORD` varchar(30) NOT NULL,
+  `NOMOR_PENDAFTARAN` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data untuk tabel `datasiswa`
 --
 
-INSERT INTO `datasiswa` (`ID_SISWA`, `NAMA_LENGKAP`, `NAMA_PANGGILAN`, `TEMPAT_LAHIR`, `TGL_LAHIR`, `JENIS_KELAMIN`, `TINGGI_BADAN`, `BERAT_BADAN`, `PANJANG_TANGAN`, `PANJANG_KAKI`, `AGAMA`, `ALAMAT_RUMAH`, `KODE_POS_RUMAH`, `TELEPON_RUMAH`, `ASAL_SEKOLAH`, `KELAS_JURUSAN`, `ALAMAT_SEKOLAH`, `KODE_POS_SEKOLAH`, `TELEPON_SEKOLAH`, `HOBI`, `TGL_BUAT`, `TGL_UBAH`, `STATUS`, `KETERAMPILAN_KHUSUS`, `PENGHARGAAN_SEKOLAH`, `PENGHARGAAN_KECAMATAN`, `PENGHARGAAN_KAB_KOTA`, `PENGHARGAAN_PROVINSI`, `PENGHARGAAN_NASIONAL`, `PENGHARGAAN_INTERNASIONAL`) VALUES
-(9, 'Huria Dhahika Usman', 'Heru', 'Sofifi', '2006-03-23', 'Perempuan', '155', '60', '50', '50', 'Islam', 'Desa Somahode', '18976', '082191208347', 'SD Somahode', '6', 'Desa Somahode', '18756', '082198465789', 'Main Voli', '2025-05-17 15:41:25', '2025-06-16 04:59:43', 'DITOLAK', 'Menari', '', '', '', 'Juara Main Voli', '', ''),
-(13, 'Qaulan Sakila Usman', 'Ulan', 'Tidore', '2003-09-30', 'Perempuan', '154', '62', '40', '40', 'Islam', 'Kelurahan Topo', '18967', '082191208342', 'SMAN 3 TIDORE KEPULAUAN', 'IPA', 'Gamtufkange', '18974', '08283745698', '', '2025-06-20 23:24:32', '2025-06-20 21:24:32', 'BELUM DIVERIFIKASI', '', '', '', '', '', '', '');
+INSERT INTO `datasiswa` (`ID_SISWA`, `NAMA_LENGKAP`, `NAMA_PANGGILAN`, `TEMPAT_LAHIR`, `TGL_LAHIR`, `JENIS_KELAMIN`, `TINGGI_BADAN`, `BERAT_BADAN`, `PANJANG_TANGAN`, `PANJANG_KAKI`, `AGAMA`, `ALAMAT_RUMAH`, `KODE_POS_RUMAH`, `TELEPON_RUMAH`, `ASAL_SEKOLAH`, `KELAS_JURUSAN`, `ALAMAT_SEKOLAH`, `KODE_POS_SEKOLAH`, `TELEPON_SEKOLAH`, `HOBI`, `TGL_BUAT`, `TGL_UBAH`, `STATUS`, `KETERAMPILAN_KHUSUS`, `PENGHARGAAN_SEKOLAH`, `PENGHARGAAN_KECAMATAN`, `PENGHARGAAN_KAB_KOTA`, `PENGHARGAAN_PROVINSI`, `PENGHARGAAN_NASIONAL`, `PENGHARGAAN_INTERNASIONAL`, `USERNAME`, `PASSWORD`, `NOMOR_PENDAFTARAN`) VALUES
+(19, 'dfvb', 'dfv', 'sd', '2002-02-02', 'Perempuan', '2345', '234', '23', '234', 'Kristen Protestan', 'df', 'sdf', 'edfg', 'asdf', 'asd', 'asd', 'sd', 'asdc', '', '2025-06-24 13:33:10', '2025-06-24 04:39:17', 'BELUM DIVERIFIKASI', '', '', '', '', '', '', '', '123', '123', 'PSB20250001');
 
 -- --------------------------------------------------------
 
@@ -179,13 +174,6 @@ CREATE TABLE `dokumen` (
   `SKL` varchar(100) NOT NULL,
   `BUKU_PIP` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data untuk tabel `dokumen`
---
-
-INSERT INTO `dokumen` (`ID_DOKUMEN`, `ID_SISWA`, `AKTA`, `KARTU_KELUARGA`, `IJAZAH`, `SKL`, `BUKU_PIP`) VALUES
-(1, 9, 'AKTA_9_1748342139.pdf', 'KARTU_KELUARGA_9_1748342139.pdf', 'IJAZAH_9_1748342139.pdf', 'SKL_9_1748342139.pdf', '');
 
 --
 -- Indexes for dumped tables
@@ -215,7 +203,8 @@ ALTER TABLE `dataortu_wali`
 -- Indeks untuk tabel `datasiswa`
 --
 ALTER TABLE `datasiswa`
-  ADD PRIMARY KEY (`ID_SISWA`);
+  ADD PRIMARY KEY (`ID_SISWA`),
+  ADD UNIQUE KEY `NOMOR_PENDAFTARAN` (`NOMOR_PENDAFTARAN`);
 
 --
 -- Indeks untuk tabel `dokumen`
@@ -232,31 +221,31 @@ ALTER TABLE `dokumen`
 -- AUTO_INCREMENT untuk tabel `administrasi`
 --
 ALTER TABLE `administrasi`
-  MODIFY `ID_BAYAR` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `ID_BAYAR` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT untuk tabel `dataadmin`
 --
 ALTER TABLE `dataadmin`
-  MODIFY `ID_ADMIN` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `ID_ADMIN` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT untuk tabel `dataortu_wali`
 --
 ALTER TABLE `dataortu_wali`
-  MODIFY `ID_ORTU_WALI` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `ID_ORTU_WALI` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT untuk tabel `datasiswa`
 --
 ALTER TABLE `datasiswa`
-  MODIFY `ID_SISWA` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `ID_SISWA` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT untuk tabel `dokumen`
 --
 ALTER TABLE `dokumen`
-  MODIFY `ID_DOKUMEN` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `ID_DOKUMEN` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)

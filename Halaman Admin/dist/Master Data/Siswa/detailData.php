@@ -56,6 +56,11 @@ $data_dokumen = mysqli_fetch_assoc($query_dokumen);
                             <table class="table table-striped">
                                 <tbody>
                                     <tr>
+                                        <td>Nomor Pendaftaran</td>
+                                        <td><?php echo $data_siswa['NOMOR_PENDAFTARAN']; ?></td>
+                                    </tr>
+
+                                    <tr>
                                         <td>Nama Lengkap</td>
                                         <td><?php echo $data_siswa['NAMA_LENGKAP']; ?></td>
                                     </tr>
@@ -158,6 +163,14 @@ $data_dokumen = mysqli_fetch_assoc($query_dokumen);
                                     <tr>
                                         <td>Penghargaan Internasional</td>
                                         <td><?php echo $data_siswa['PENGHARGAAN_INTERNASIONAL']; ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Username</td>
+                                        <td><?php echo $data_siswa['USERNAME']; ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Password</td>
+                                        <td><?php echo $data_siswa['PASSWORD']; ?></td>
                                     </tr>
                                     <tr>
                                         <td>Tanggal Buat</td>

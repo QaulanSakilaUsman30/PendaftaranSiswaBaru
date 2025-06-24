@@ -24,7 +24,7 @@ $totalPages = ceil($totalRecords / $resultsPerPage);
 
 // Query to get the data with pagination and search
 $dataQuery = "
-    SELECT a.ID_BAYAR, s.NAMA_LENGKAP, a.NAMA_BANK, a.STATUS, a.JUMLAH_BIAYA
+    SELECT a.ID_BAYAR, s.NAMA_LENGKAP, a.NAMA_BANK, a.TIPE, a.JUMLAH_BIAYA
     FROM administrasi a
     INNER JOIN datasiswa s ON a.ID_SISWA = s.ID_SISWA
     WHERE s.NAMA_LENGKAP LIKE '%$searchTerm%' OR a.NAMA_BANK LIKE '%$searchTerm%'
@@ -86,7 +86,7 @@ $data = mysqli_query($conn, $dataQuery) or die(mysqli_error($conn));
                                     <th class="text-center"> No </th>
                                     <th>Nama Siswa</th>
                                     <th>Nama Bank</th>
-                                    <th>Status</th>
+                                    <th>Tipe Pembayaran</th>
                                     <th>Jumlah Biaya</th>
                                     <th class="text-center">Action</th>
                                 </tr>
@@ -102,10 +102,10 @@ $data = mysqli_query($conn, $dataQuery) or die(mysqli_error($conn));
                                     <td><?= htmlspecialchars($row['NAMA_BANK']); ?></td>
                                     <td>
                                         <?php
-                                            if ($row['STATUS'] == 'LUNAS') {
-                                                echo '<span class="badge bg-success">Lunas</span>';
-                                            } elseif ($row['STATUS'] == 'BELUM LUNAS') {
-                                                echo '<span class="badge bg-warning">Belum Lunas</span>';
+                                            if ($row['TIPE'] == 'CASH') {
+                                                echo '<span class="badge bg-success">CASH</span>';
+                                            } elseif ($row['TIPE'] == 'TRANSFER') {
+                                                echo '<span class="badge bg-warning">TRANSFER</span>';
                                             }
                                         ?>
                                     </td>

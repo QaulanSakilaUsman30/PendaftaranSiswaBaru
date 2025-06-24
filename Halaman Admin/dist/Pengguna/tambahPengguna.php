@@ -66,7 +66,10 @@
                             $sql = "INSERT INTO dataadmin (NAMA_ADMIN, TELEPON, USERNAME, PASSWORD, GAMBAR, TGL_BUAT)
                                     VALUES ('$nama_admin', '$TELEPON', '$username', '$password', '$gambar', '$tgl_buat')";
                             if ($conn->query($sql) === TRUE) {
-                                header('Location: index.php?ke=pengguna');
+                                echo "<script>
+                            alert('Data admin berhasil ditambahkan.');
+                            window.location.href = 'index.php?ke=pengguna';
+                        </script>";
                                 exit();
                             } else {
                                 echo "Error: " . $sql . "<br>" . $conn->error;

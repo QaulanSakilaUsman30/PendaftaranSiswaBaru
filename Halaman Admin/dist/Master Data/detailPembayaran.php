@@ -5,7 +5,7 @@ include '../../koneksi.php';
 $id_administrasi = $_GET['id'];
 
 // Query untuk mengambil data administrasi berdasarkan ID
-$data = mysqli_query($conn, "SELECT `ID_BAYAR`, `ID_SISWA`, `NAMA_BANK`, `BUKTI_TRANSFER`, `STATUS`, `JUMLAH_BIAYA`, `TGL_BUAT`, `TGL_UBAH` FROM `administrasi` WHERE `ID_BAYAR`='$id_administrasi'") or die(mysqli_error($conn));
+$data = mysqli_query($conn, "SELECT `ID_BAYAR`, `ID_SISWA`, `NAMA_BANK`, `BUKTI_TRANSFER`, `TIPE`, `JUMLAH_BIAYA`, `TGL_BUAT`, `TGL_UBAH` FROM `administrasi` WHERE `ID_BAYAR`='$id_administrasi'") or die(mysqli_error($conn));
 $row = mysqli_fetch_assoc($data);
 
 // Ambil data siswa berdasarkan ID_SISWA
@@ -77,8 +77,8 @@ $conn->close();
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th>Status Pembayaran</th>
-                                        <td><?= htmlspecialchars($row['STATUS']); ?></td>
+                                        <th>Tipe Pembayaran</th>
+                                        <td><?= htmlspecialchars($row['TIPE']); ?></td>
                                     </tr>
                                     <tr>
                                         <th>Jumlah Biaya</th>

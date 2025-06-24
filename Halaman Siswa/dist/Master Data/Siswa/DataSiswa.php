@@ -42,44 +42,66 @@ if (isset($_POST['ubahdata'])) {
     $penghargaan_provinsi = mysqli_real_escape_string($conn, $_POST['PENGHARGAAN_PROVINSI']);
     $penghargaan_nasional = mysqli_real_escape_string($conn, $_POST['PENGHARGAAN_NASIONAL']);
     $penghargaan_internasional = mysqli_real_escape_string($conn, $_POST['PENGHARGAAN_INTERNASIONAL']);
+    $username = mysqli_real_escape_string($conn, $_POST['USERNAME']);
+    $password = mysqli_real_escape_string($conn, $_POST['PASSWORD']);
 
-    // Query untuk mengupdate data siswa
-    $query_update = mysqli_query($conn, "UPDATE datasiswa SET
-        NAMA_LENGKAP = '$nama_lengkap',
-        NAMA_PANGGILAN = '$nama_panggilan',
-        TEMPAT_LAHIR = '$tempat_lahir',
-        TGL_LAHIR = '$tgl_lahir',
-        JENIS_KELAMIN = '$jenis_kelamin',
-        AGAMA = '$agama',
-        TINGGI_BADAN = '$tinggi_badan',
-        BERAT_BADAN = '$berat_badan',
-        PANJANG_TANGAN = '$panjang_tangan',
-        PANJANG_KAKI = '$panjang_kaki',
-        ALAMAT_RUMAH = '$alamat_rumah',
-        KODE_POS_RUMAH = '$kode_pos_rumah',
-        TELEPON_RUMAH = '$telepon_rumah',
-        ASAL_SEKOLAH = '$asal_sekolah',
-        KELAS_JURUSAN = '$kelas_jurusan',
-        ALAMAT_SEKOLAH = '$alamat_sekolah',
-        KODE_POS_SEKOLAH = '$kode_pos_sekolah',
-        TELEPON_SEKOLAH = '$telepon_sekolah',
-        TGL_UBAH = '$tgl_ubah',
-        HOBI = '$hobi',
-        KETERAMPILAN_KHUSUS = '$keterampilan_khusus',
-        PENGHARGAAN_SEKOLAH = '$penghargaan_sekolah',
-        PENGHARGAAN_KECAMATAN = '$penghargaan_kecamatan',
-        PENGHARGAAN_KAB_KOTA = '$penghargaan_kab_kota',
-        PENGHARGAAN_PROVINSI = '$penghargaan_provinsi',
-        PENGHARGAAN_NASIONAL = '$penghargaan_nasional',
-        PENGHARGAAN_INTERNASIONAL = '$penghargaan_internasional'
-        WHERE ID_SISWA = '$id_siswa_login'");
 
-    // Cek apakah query berhasil dijalankan
-    if ($query_update) {
-        echo "<script>alert('Data siswa berhasil diubah.'); window.location.href='index.php?ke=datasiswa';</script>";
+ // Simpan nilai lama dari session
+$old_username = $_SESSION['usernameSiswa'];
+$old_password = $_SESSION['passwordSiswa']; // pastikan diset saat login
+
+// Query untuk mengupdate data siswa
+$query_update = mysqli_query($conn, "UPDATE datasiswa SET
+    NAMA_LENGKAP = '$nama_lengkap',
+    NAMA_PANGGILAN = '$nama_panggilan',
+    TEMPAT_LAHIR = '$tempat_lahir',
+    TGL_LAHIR = '$tgl_lahir',
+    JENIS_KELAMIN = '$jenis_kelamin',
+    AGAMA = '$agama',
+    TINGGI_BADAN = '$tinggi_badan',
+    BERAT_BADAN = '$berat_badan',
+    PANJANG_TANGAN = '$panjang_tangan',
+    PANJANG_KAKI = '$panjang_kaki',
+    ALAMAT_RUMAH = '$alamat_rumah',
+    KODE_POS_RUMAH = '$kode_pos_rumah',
+    TELEPON_RUMAH = '$telepon_rumah',
+    ASAL_SEKOLAH = '$asal_sekolah',
+    KELAS_JURUSAN = '$kelas_jurusan',
+    ALAMAT_SEKOLAH = '$alamat_sekolah',
+    KODE_POS_SEKOLAH = '$kode_pos_sekolah',
+    TELEPON_SEKOLAH = '$telepon_sekolah',
+    TGL_UBAH = '$tgl_ubah',
+    HOBI = '$hobi',
+    KETERAMPILAN_KHUSUS = '$keterampilan_khusus',
+    PENGHARGAAN_SEKOLAH = '$penghargaan_sekolah',
+    PENGHARGAAN_KECAMATAN = '$penghargaan_kecamatan',
+    PENGHARGAAN_KAB_KOTA = '$penghargaan_kab_kota',
+    PENGHARGAAN_PROVINSI = '$penghargaan_provinsi',
+    PENGHARGAAN_NASIONAL = '$penghargaan_nasional',
+    PENGHARGAAN_INTERNASIONAL = '$penghargaan_internasional',
+    USERNAME = '$username',
+    PASSWORD = '$password'
+    WHERE ID_SISWA = '$id_siswa_login'
+");
+
+// Cek apakah query berhasil dijalankan
+if ($query_update) {
+    // Cek apakah username atau password berubah
+    if ($username !== $old_username || $password !== $old_password) {
+        session_destroy(); // logout paksa
+        echo "<script>
+            alert('Username atau Password telah diubah. Silakan login ulang.');
+            window.location.href = 'Logout.php';
+        </script>";
     } else {
-        echo "<script>alert('Terjadi kesalahan saat mengubah data siswa: " . mysqli_error($conn) . "');</script>";
+        echo "<script>
+            alert('Data siswa berhasil diubah.');
+            window.location.href='index.php?ke=datasiswa';
+        </script>";
     }
+} else {
+    echo "<script>alert('Terjadi kesalahan saat mengubah data siswa: " . mysqli_error($conn) . "');</script>";
+}
 }
 
 // Proses update data jika form disubmit
@@ -207,6 +229,12 @@ $data_ortu_wali = mysqli_fetch_assoc($query_detail_ortu);
                         ?>
 
                         <!-- Tombol Cetak -->
+                         <li style="margin-right:15px;">
+                                <a href="Master Data/Siswa/cetakbukti.php" class="btn icon icon-left btn-primary">
+                                <svg fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M448 192V77.3c0-8.5-3.4-16.6-9.4-22.6L393.4 9.4c-6-6-14.1-9.4-22.6-9.4H96C78.3 0 64 14.3 64 32v160c-35.4 0-64 28.7-64 64v112c0 8.8 7.2 16 16 16h48v96c0 17.7 14.3 32 32 32h320c17.7 0 32-14.3 32-32v-96h48c8.8 0 16-7.2 16-16V256c0-35.4-28.7-64-64-64zm-64 256H128v-96h256v96zm0-224H128V64h192v48c0 8.8 7.2 16 16 16h48v96zm48 72c-13.3 0-24-10.8-24-24 0-13.3 10.8-24 24-24s24 10.7 24 24c0 13.3-10.8 24-24 24z"/></svg>
+                                Bukti Pendaftaran
+                            </a>
+                        </li>
                         <li style="margin-right:15px;">
                             <?php if ($ortu_kosong): ?>
                                 <a href="#" onclick="alert('Harap lengkapi data Orang Tua/Wali terlebih dahulu di Dashboard!')" class="btn icon icon-left btn-warning">
@@ -214,9 +242,10 @@ $data_ortu_wali = mysqli_fetch_assoc($query_detail_ortu);
                                 <a href="Master Data/Siswa/cetak.php" class="btn icon icon-left btn-warning">
                             <?php endif; ?>
                                 <svg fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M448 192V77.3c0-8.5-3.4-16.6-9.4-22.6L393.4 9.4c-6-6-14.1-9.4-22.6-9.4H96C78.3 0 64 14.3 64 32v160c-35.4 0-64 28.7-64 64v112c0 8.8 7.2 16 16 16h48v96c0 17.7 14.3 32 32 32h320c17.7 0 32-14.3 32-32v-96h48c8.8 0 16-7.2 16-16V256c0-35.4-28.7-64-64-64zm-64 256H128v-96h256v96zm0-224H128V64h192v48c0 8.8 7.2 16 16 16h48v96zm48 72c-13.3 0-24-10.8-24-24 0-13.3 10.8-24 24-24s24 10.7 24 24c0 13.3-10.8 24-24 24z"/></svg>
-                                Cetak PDF
+                                Formulir PDF
                             </a>
                         </li>
+                        
 
                         <li>
                             <?php if ($ortu_kosong): ?>
@@ -225,7 +254,7 @@ $data_ortu_wali = mysqli_fetch_assoc($query_detail_ortu);
                                 <a href="Master Data/Siswa/cetak_excel.php" class="btn icon icon-left btn-success">
                             <?php endif; ?>
                                 <svg fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M448 192V77.3c0-8.5-3.4-16.6-9.4-22.6L393.4 9.4c-6-6-14.1-9.4-22.6-9.4H96C78.3 0 64 14.3 64 32v160c-35.4 0-64 28.7-64 64v112c0 8.8 7.2 16 16 16h48v96c0 17.7 14.3 32 32 32h320c17.7 0 32-14.3 32-32v-96h48c8.8 0 16-7.2 16-16V256c0-35.4-28.7-64-64-64zm-64 256H128v-96h256v96zm0-224H128V64h192v48c0 8.8 7.2 16 16 16h48v96zm48 72c-13.3 0-24-10.8-24-24 0-13.3 10.8-24 24-24s24 10.7 24 24c0 13.3-10.8 24-24 24z"/></svg>
-                                Cetak EXCEL
+                                Formulir EXCEL
                             </a>
                         </li>
 
@@ -427,7 +456,22 @@ $data_ortu_wali = mysqli_fetch_assoc($query_detail_ortu);
                                                 <div class="valid-feedback">Bagus!</div>
                                             </div>
                                         </div>
-                                        
+                                        <div class="col-md-6 col-12">
+                                            <div class="form-group">
+                                                <label for="username-column">Username</label>
+                                                <input type="text" id="username-column" class="form-control" name="USERNAME" 
+                                                    value="<?php echo $data_siswa['USERNAME']; ?>">
+                                                <div class="valid-feedback">Bagus!</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-12">
+                                            <div class="form-group">
+                                                <label for="password-column">Password</label>
+                                                <input type="password" id="password-column" class="form-control" name="PASSWORD" 
+                                                    value="<?php echo $data_siswa['PASSWORD']; ?>">
+                                                <div class="valid-feedback">Bagus!</div>
+                                            </div>
+                                        </div>
                                         <div class="col-md-6 col-12">
                                             <div class="form-group">
                                                 <label for="tgl-buat-column">Tanggal Buat</label>

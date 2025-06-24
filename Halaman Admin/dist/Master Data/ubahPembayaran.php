@@ -5,7 +5,7 @@ include '../../koneksi.php';
 $id_administrasi = $_GET['id'];
 
 // Query untuk mengambil data administrasi berdasarkan ID
-$data = mysqli_query($conn, "SELECT `ID_BAYAR`, `ID_SISWA`, `NAMA_BANK`, `BUKTI_TRANSFER`, `STATUS`, `JUMLAH_BIAYA`, `TGL_BUAT` FROM `administrasi` WHERE `ID_BAYAR`='$id_administrasi'") or die(mysqli_error($conn));
+$data = mysqli_query($conn, "SELECT `ID_BAYAR`, `ID_SISWA`, `NAMA_BANK`, `BUKTI_TRANSFER`, `TIPE`, `JUMLAH_BIAYA`, `TGL_BUAT` FROM `administrasi` WHERE `ID_BAYAR`='$id_administrasi'") or die(mysqli_error($conn));
 $row = mysqli_fetch_assoc($data);
 
 // Ambil data siswa berdasarkan ID_SISWA
@@ -18,7 +18,7 @@ if (isset($_POST['ubahDataAdministrasi'])) {
     // Ambil dan sanitasi data dari form
     $id_siswa = mysqli_real_escape_string($conn, $_POST['ID_SISWA']);
     $nama_bank = mysqli_real_escape_string($conn, $_POST['NAMA_BANK']);
-    $status = mysqli_real_escape_string($conn, $_POST['STATUS']);
+    $TIPE = mysqli_real_escape_string($conn, $_POST['TIPE']);
     $jumlah_biaya = mysqli_real_escape_string($conn, $_POST['Jumlah_Biaya']);
     $bukti_transfer_lama = $row['BUKTI_TRANSFER'];
     $upload_error = false;
@@ -67,7 +67,7 @@ if (isset($_POST['ubahDataAdministrasi'])) {
                 `ID_SISWA`='$id_siswa',
                 `NAMA_BANK`='$nama_bank',
                 `BUKTI_TRANSFER`='$bukti_transfer',
-                `STATUS`='$status',
+                `TIPE`='$TIPE',
                 `JUMLAH_BIAYA`='$jumlah_biaya'
             WHERE `ID_BAYAR`='$id_administrasi'";
 
@@ -129,14 +129,14 @@ $conn->close();
                                 <div class="valid-feedback">Baguss!</div>
                             </div>
                             <div class="form-group">
-                                <label>Status Pembayaran</label>
+                                <label>Tipe Pembayaran</label>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="STATUS" id="BELUM_LUNAS" value="BELUM LUNAS" <?= ($row['STATUS'] == 'BELUM LUNAS') ? 'checked' : ''; ?>>
-                                    <label class="form-check-label" for="BELUM_LUNAS">Belum Lunas</label>
+                                    <input class="form-check-input" type="radio" name="TIPE" id="TRANSFER" value="TRANSFER" <?= ($row['TIPE'] == 'TRANSFER') ? 'checked' : ''; ?>>
+                                    <label class="form-check-label" for="TRANSFER">TRANSFER</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="STATUS" id="LUNAS" value="LUNAS" <?= ($row['STATUS'] == 'LUNAS') ? 'checked' : ''; ?>>
-                                    <label class="form-check-label" for="LUNAS">Lunas</label>
+                                    <input class="form-check-input" type="radio" name="TIPE" id="CASH" value="CASH" <?= ($row['TIPE'] == 'CASH') ? 'checked' : ''; ?>>
+                                    <label class="form-check-label" for="CASH">CASH</label>
                                 </div>
                             </div>
                             <div class="form-group">

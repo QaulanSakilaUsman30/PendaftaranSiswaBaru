@@ -33,12 +33,13 @@ include '../../koneksi.php'; // Pastikan koneksi dilakukan di atas
 // Ambil data siswa dari tabel datasiswa untuk dropdown
 $siswa_result = $conn->query("SELECT ID_SISWA, NAMA_LENGKAP FROM datasiswa ORDER BY NAMA_LENGKAP ASC");
 
+
 // Cek apakah form disubmit
 if (isset($_POST['tambahDataPembayaran'])) {
     // Ambil dan sanitasi data dari form
     $id_siswa = mysqli_real_escape_string($conn, $_POST['ID_Siswa']);
     $NAMA_BANK = mysqli_real_escape_string($conn, $_POST['NAMA_BANK']);
-    $STATUS = mysqli_real_escape_string($conn, $_POST['STATUS']);
+    $TIPE = mysqli_real_escape_string($conn, $_POST['TIPE']);
     $JUMLAH_BIAYA = mysqli_real_escape_string($conn, $_POST['JUMLAH_BIAYA']);
     $BUKTI_TRANSFER = $_FILES['BUKTI_TRANSFER']['name'];
     $tgl_buat = date('Y-m-d H:i:s');
@@ -79,11 +80,14 @@ if (isset($_POST['tambahDataPembayaran'])) {
                 // Pindahkan file ke folder tujuan
                 if (move_uploaded_file($_FILES['BUKTI_TRANSFER']['tmp_name'], $target_file)) {
                     // Query untuk menambah data pembayaran
-                    $sql = "INSERT INTO administrasi (ID_SISWA, NAMA_BANK, STATUS, JUMLAH_BIAYA, BUKTI_TRANSFER, TGL_BUAT)
-                            VALUES ('$id_siswa', '$NAMA_BANK', '$STATUS', '$JUMLAH_BIAYA', '$BUKTI_TRANSFER', '$tgl_buat')";
+                    $sql = "INSERT INTO administrasi (ID_SISWA, NAMA_BANK, TIPE, JUMLAH_BIAYA, BUKTI_TRANSFER, TGL_BUAT)
+                            VALUES ('$id_siswa', '$NAMA_BANK', '$TIPE', '$JUMLAH_BIAYA', '$BUKTI_TRANSFER', '$tgl_buat')";
 
                     if ($conn->query($sql) === TRUE) {
-                        header('Location: index.php?ke=pembayaran');
+                        echo "<script>
+                            alert('Data pembayaran berhasil ditambahkan.');
+                            window.location.href = 'index.php?ke=pembayaran';
+                        </script>";
                         exit(); // Pastikan untuk menghentikan eksekusi setelah redirect
                     } else {
                         echo "<div class='alert alert-danger'>Error: " . $conn->error . "</div>";
@@ -94,11 +98,14 @@ if (isset($_POST['tambahDataPembayaran'])) {
             }
         } else {
             // Jika BUKTI_TRANSFER tidak diisi, tetap lakukan insert tanpa BUKTI_TRANSFER
-            $sql = "INSERT INTO administrasi (ID_SISWA, NAMA_BANK, STATUS, JUMLAH_BIAYA, TGL_BUAT)
-                    VALUES ('$id_siswa', '$NAMA_BANK', '$STATUS', '$JUMLAH_BIAYA', '$tgl_buat')";
+            $sql = "INSERT INTO administrasi (ID_SISWA, NAMA_BANK, TIPE, JUMLAH_BIAYA, TGL_BUAT)
+                    VALUES ('$id_siswa', '$NAMA_BANK', '$TIPE', '$JUMLAH_BIAYA', '$tgl_buat')";
 
             if ($conn->query($sql) === TRUE) {
-                header('Location: index.php?ke=pembayaran');
+               echo "<script>
+                            alert('Data pembayaran berhasil ditambahkan.');
+                            window.location.href = 'index.php?ke=pembayaran';
+                        </script>";
                 exit(); // Pastikan untuk menghentikan eksekusi setelah redirect
             } else {
                 echo "<div class='alert alert-danger'>Error: " . $conn->error . "</div>";
@@ -107,6 +114,9 @@ if (isset($_POST['tambahDataPembayaran'])) {
     }
 }
 ?>
+
+
+
                     <div class="section-title mt-0 ml-4">Tambah Pembayaran</div>
                     <form class="needs-validation" novalidate action="" method="POST" enctype="multipart/form-data">
                         <div class="modal-body">
@@ -134,16 +144,16 @@ if (isset($_POST['tambahDataPembayaran'])) {
                             </div>
 
                             <div class="form-group">
-                                <label>Status Pembayaran</label><br>
+                                <label>Tipe Pembayaran</label><br>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="STATUS" id="BELUM_LUNAS" value="BELUM LUNAS" required>
-                                    <label class="form-check-label" for="BELUM_LUNAS">Belum Lunas</label>
+                                    <input class="form-check-input" type="radio" name="TIPE" id="TRANSFER" value="TRANSFER" required>
+                                    <label class="form-check-label" for="TRANSFER">TRANSFER</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="STATUS" id="LUNAS" value="LUNAS" required>
-                                    <label class="form-check-label" for="LUNAS">Lunas</label>
+                                    <input class="form-check-input" type="radio" name="TIPE" id="CASH" value="CASH" required>
+                                    <label class="form-check-label" for="CASH">CASH</label>
                                 </div>
-                                <div class="invalid-feedback d-block">Silakan pilih status pembayaran.</div>
+                                <div class="invalid-feedback d-block">Silakan pilih Tipe pembayaran.</div>
                             </div>
 
                             <div class="form-group">

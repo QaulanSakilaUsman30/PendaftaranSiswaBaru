@@ -29,6 +29,9 @@
      $PENGHARGAAN_PROVINSI = mysqli_real_escape_string($conn, $_POST['PENGHARGAAN_PROVINSI']);
      $PENGHARGAAN_NASIONAL = mysqli_real_escape_string($conn, $_POST['PENGHARGAAN_NASIONAL']);
      $PENGHARGAAN_INTERNASIONAL = mysqli_real_escape_string($conn, $_POST['PENGHARGAAN_INTERNASIONAL']);
+     $USERNAME = mysqli_real_escape_string($conn, $_POST['USERNAME']);
+     $PASSWORD = mysqli_real_escape_string($conn, $_POST['PASSWORD']);
+     $nomor_pendaftaran = mysqli_real_escape_string($conn, $_POST['NOMOR_PENDAFTARAN']);
 
      // Set status default
     $status = 'BELUM DIVERIFIKASI';
@@ -61,14 +64,41 @@
          PENGHARGAAN_PROVINSI = '$PENGHARGAAN_PROVINSI',
          PENGHARGAAN_NASIONAL = '$PENGHARGAAN_NASIONAL',
          PENGHARGAAN_INTERNASIONAL = '$PENGHARGAAN_INTERNASIONAL',
+         USERNAME = '$USERNAME',
+         PASSWORD = '$PASSWORD',
+         NOMOR_PENDAFTARAN = '$nomor_pendaftaran',
          STATUS = '$status'");
-     if ($query_siswa) {
-         header('location:../Halaman Siswa/dist/Login.php');
-     }else{
-         echo"<p> Data Gagal Di Simpan";
-     }
- }
- ?>           
+        if ($query_siswa) {
+        echo "<script>
+            alert('Data berhasil dikirim!');
+            window.location.href = '../Halaman Siswa/dist/Login.php';
+        </script>";
+        } else {
+            echo "<p>Data gagal disimpan</p>";
+        }
+
+        }
+        // Generate nomor urut terakhir
+        $year = date('Y');
+        $prefix = "PSB$year";
+
+        // Ambil nomor terakhir di tahun ini
+        $get_last = mysqli_query($conn, "SELECT NOMOR_PENDAFTARAN FROM datasiswa 
+            WHERE NOMOR_PENDAFTARAN LIKE '$prefix%' 
+            ORDER BY NOMOR_PENDAFTARAN DESC LIMIT 1");
+
+        $last_number = 0;
+        if (mysqli_num_rows($get_last) > 0) {
+            $row = mysqli_fetch_assoc($get_last);
+            $last_code = substr($row['NOMOR_PENDAFTARAN'], -4); // Ambil 4 digit terakhir
+            $last_number = (int)$last_code;
+        }
+
+        // Nomor baru
+        $new_number = str_pad($last_number + 1, 4, '0', STR_PAD_LEFT);
+        $nomor_pendaftaran = $prefix . $new_number;
+
+    ?>           
 <!doctype html>
 <html class="no-js" lang="zxx">
 <head>
@@ -361,6 +391,13 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
+                                            <label for="NOMOR_PENDAFTARAN">Nomor Pendaftaran</label>
+                                            <!-- Field ini akan diisi otomatis dan tidak bisa diedit user -->
+                                            <input type="text" class="form-control" id="NOMOR_PENDAFTARAN" name="NOMOR_PENDAFTARAN" value="<?= htmlspecialchars($nomor_pendaftaran); ?>" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
                                             <label for="NAMA_LENGKAP">Nama Lengkap</label>
                                             <input type="text" class="form-control" id="NAMA_LENGKAP" name="NAMA_LENGKAP" required>
                                             <div class="valid-feedback"> Bagus! </div>
@@ -375,17 +412,15 @@
                                             <div class="invalid-feedback"> Wajib Diisi! </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-3">
                                         <div class="form-group">
                                             <label for="TEMPAT_LAHIR">Tempat Lahir</label>
                                             <input type="text" class="form-control" id="TEMPAT_LAHIR" name="TEMPAT_LAHIR" required>
                                             <div class="valid-feedback"> Bagus! </div>
                                             <div class="invalid-feedback"> Wajib Diisi! </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-6">
+                                     </div>
+                                      <div class="col-md-3">
                                         <div class="form-group">
                                             <label for="TGL_LAHIR">Tanggal Lahir</label>
                                             <input type="date" class="form-control" id="TGL_LAHIR" name="TGL_LAHIR" required>
@@ -560,6 +595,11 @@
                                                 <label for="PENGHARGAAN_KAB_KOTA">Penghargaan Tingkat Kab/Kota</label>
                                                 <input type="text" class="form-control" id="PENGHARGAAN_KAB_KOTA" name="PENGHARGAAN_KAB_KOTA" placeholder="Sebutkan penghargaan di tingkat kab/kota">
                                             </div>
+                                            <br>
+                                            <div>
+                                                <label for="USERNAME">Username</label>
+                                                <input type="text" class="form-control" id="USERNAME" name="USERNAME" placeholder="Buat Username yang unik" required>
+                                            </div>
                                         </div>
                                         <div class="valid-feedback">Bagus!</div>
                                         <div class="invalid-feedback">Wajib Diisi!</div>
@@ -579,6 +619,11 @@
                                             <div>
                                                 <label for="PENGHARGAAN_INTERNASIONAL">Penghargaan Tingkat Internasional</label>
                                                 <input type="text" class="form-control" id="PENGHARGAAN_INTERNASIONAL" name="PENGHARGAAN_INTERNASIONAL" placeholder="Sebutkan penghargaan di tingkat Internasional">
+                                            </div>
+                                            <br>
+                                            <div>
+                                                <label for="PASSWORD">Password</label>
+                                                <input type="password" class="form-control" id="PASSWORD" name="PASSWORD" placeholder="Buat Password yang unik" required>
                                             </div>
                                         </div>
                                         <div class="valid-feedback">Bagus!</div>

@@ -2,7 +2,7 @@
 session_start();
 ob_start(); // Tambahkan di baris paling atas
 include '../../koneksi.php';
-if (empty($_SESSION['TelpSiswa'])) {
+if (empty($_SESSION['usernameSiswa'])) {
 	header('location:Login.php');
 }
 

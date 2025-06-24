@@ -24,53 +24,50 @@
                     </div>
                     <h1 class="auth-title" style="font-size: 35px">Selamat Datang di PSB</h1>
                     <p class="auth-subtitle mb-5" style=" font-size: 20px">Sebelum Anda memulai, Anda harus masuk atau mendaftar jika Anda belum memiliki akun.</p>
-                  <?php
-                    session_start();
-                    include '../../koneksi.php';
+                    <?php
+                        session_start();
+                        include '../../koneksi.php';
 
-                    if (isset($_POST['loginData'])) {
-                        $telpEmpty = empty($_POST['TELEPON_RUMAH']);
-                        $tglLahirEmpty = empty($_POST['TGL_LAHIR']);
+                        if (isset($_POST['loginData'])) {
+                            $usernameEmpty = empty($_POST['USERNAME']);
+                            $passwordEmpty = empty($_POST['PASSWORD']);
 
-                        if ($telpEmpty && $tglLahirEmpty) {
-                            echo "<p>Telepon Rumah dan Tanggal Lahir belum diisi!</p>";
-                        } elseif ($telpEmpty || $tglLahirEmpty) {
-                            echo "<p>Silahkan lengkapi Telepon Rumah dan Tanggal Lahir terlebih dahulu!</p>";
-                        } else {
-                            $Telp = mysqli_real_escape_string($conn, $_POST['TELEPON_RUMAH']);
-                            $tanggal_lahir = mysqli_real_escape_string($conn, $_POST['TGL_LAHIR']);
-
-                            // Debugging (bisa kamu hapus setelah yakin inputnya benar)
-                            // var_dump($Telp, $tanggal_lahir);
-
-                            $query = mysqli_query($conn, "SELECT * FROM datasiswa WHERE TELEPON_RUMAH = '$Telp' AND TGL_LAHIR = '$tanggal_lahir'") or die(mysqli_error($conn));
-
-                            if (mysqli_num_rows($query) > 0) {
-                                $row = mysqli_fetch_assoc($query);
-                                $_SESSION['ID_SISWA'] = $row['ID_SISWA']; // session ID siswa
-                                $_SESSION['TelpSiswa'] = $Telp;
-                                $_SESSION['namaSiswa'] = $row['NAMA_LENGKAP'];
-                                $_SESSION['tlPeserta'] = $tanggal_lahir;
-                                header('Location: index.php');
-                                exit();
+                            if ($usernameEmpty && $passwordEmpty) {
+                                echo "<p>Username dan Password belum diisi!</p>";
+                            } elseif ($usernameEmpty || $passwordEmpty) {
+                                echo "<p>Silakan lengkapi Username dan Password terlebih dahulu!</p>";
                             } else {
-                                echo "<p>Telepon Rumah dan Tanggal Lahir tidak cocok!</p>";
+                                $username = mysqli_real_escape_string($conn, $_POST['USERNAME']);
+                                $password = mysqli_real_escape_string($conn, $_POST['PASSWORD']);
+
+                                $query = mysqli_query($conn, "SELECT * FROM datasiswa WHERE USERNAME = '$username' AND PASSWORD = '$password'") or die(mysqli_error($conn));
+
+                                if (mysqli_num_rows($query) > 0) {
+                                    $row = mysqli_fetch_assoc($query);
+                                    $_SESSION['ID_SISWA'] = $row['ID_SISWA'];
+                                    $_SESSION['usernameSiswa'] = $username;
+                                    $_SESSION['namaSiswa'] = $row['NAMA_LENGKAP'];
+                                    $_SESSION['passwordSiswa'] = $password; // optional, bisa dihapus demi keamanan
+                                    header('Location: index.php');
+                                    exit();
+                                } else {
+                                    echo "<p>Username dan Password tidak cocok!</p>";
+                                }
                             }
                         }
-                    }
-                    ?>
+                        ?>
 
                     <form method="POST">
                         <label for="" class="mb-2"><b>Username</b></label>
                         <div class="form-group position-relative has-icon-left mb-4">
-                            <input type="text" class="form-control form-control-xl" name="TELEPON_RUMAH" placeholder="Silahkan masukkan no.telp rumah">
+                            <input type="text" class="form-control form-control-xl" name="USERNAME" placeholder="Silahkan Masukkan Username">
                             <div class="form-control-icon">
                                 <i class="bi bi-person"></i>
                             </div>
                         </div>
                         <label for="" class="mb-2" ><b>Password</b></label>
                         <div class="form-group position-relative has-icon-left mb-4">
-                            <input type="date" class="form-control form-control-xl" name="TGL_LAHIR" placeholder="Silahkan Masukkan Tgl Lahir">
+                            <input type="password" class="form-control form-control-xl" name="PASSWORD" placeholder="Silahkan Masukkan Password">
                             <div class="form-control-icon">
                                 <i class="bi bi-shield-lock"></i>
                             </div>
