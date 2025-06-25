@@ -36,8 +36,17 @@ $data_dokumen = mysqli_fetch_assoc($query_dokumen);
                         Cetak PDF</a></li>
                         <li style="margin-right:15px;"><a href="Master Data/Siswa/cetak_excel.php?id=<?=$data_siswa['ID_SISWA']?>" class="btn icon icon-left btn-success"><svg fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M128 0C92.7 0 64 28.7 64 64l0 96 64 0 0-96 226.7 0L384 93.3l0 66.7 64 0 0-66.7c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0L128 0zM384 352l0 32 0 64-256 0 0-64 0-16 0-16 256 0zm64 32l32 0c17.7 0 32-14.3 32-32l0-96c0-35.3-28.7-64-64-64L64 192c-35.3 0-64 28.7-64 64l0 96c0 17.7 14.3 32 32 32l32 0 0 64c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-64zM432 248a24 24 0 1 1 0 48 24 24 0 1 1 0-48z"/></svg>
                         Cetak EXCEL</a></li>
-                        <li><a href="index.php?ke=hapusData&id=<?= htmlspecialchars($data_siswa['ID_SISWA']); ?>" class="btn icon icon-left btn-danger"><svg fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.7 23.7 0 0 0 -21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0 -16-16zM53.2 467a48 48 0 0 0 47.9 45h245.8a48 48 0 0 0 47.9-45L416 128H32z"/></svg>
-                        Hapus</a></li>
+                        <li>
+                        <a href="index.php?ke=hapusData&id=<?= htmlspecialchars($data_siswa['ID_SISWA']); ?>" 
+                            class="btn icon icon-left btn-danger" 
+                            onclick="return confirm('Anda yakin ingin menghapus data ini?');">
+                            <svg fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                            <path d="M432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.7 23.7 0 0 0 -21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0 -16-16zM53.2 467a48 48 0 0 0 47.9 45h245.8a48 48 0 0 0 47.9-45L416 128H32z"/>
+                            </svg>
+                            Hapus
+                        </a>
+                        </li>
+
                     </ol>
                 </nav>
             </div>

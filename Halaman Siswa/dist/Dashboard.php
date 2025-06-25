@@ -87,7 +87,10 @@ if (isset($_POST['tambahdata'])) {
 
     // Redirect hanya jika semua query berhasil
     if ($berhasil) {
-        header("Location: ../index.php"); // Sesuaikan path jika perlu
+        echo "<script>
+            alert('Data berhasil ditambahkan!');
+            window.location.href = '../index.php';
+        </script>";
         exit();
     }
 }

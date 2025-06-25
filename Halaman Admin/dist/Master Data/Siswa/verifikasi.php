@@ -41,7 +41,7 @@ if (!empty($id_siswa)) {
             $update_query = "UPDATE datasiswa SET STATUS = 'DIVERIFIKASI' WHERE ID_SISWA = '$id_siswa'";
 
             if (mysqli_query($conn, $update_query)) {
-                echo "<script>alert('Status siswa berhasil diubah menjadi DIVERIFIKASI.'); window.location.href='index.php?ke=siswaditerima';</script>";
+                echo "<script>alert('Data Berhasil DIVERIFIKASI.'); window.location.href='index.php?ke=siswaditerima';</script>";
                 exit;
             } else {
                 echo "Error saat mengupdate status: " . mysqli_error($conn);

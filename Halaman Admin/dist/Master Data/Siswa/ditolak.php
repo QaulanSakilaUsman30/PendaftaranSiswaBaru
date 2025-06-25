@@ -22,7 +22,7 @@ if (!empty($id_siswa) && $aksi == 'ditolak') {
 
         if (mysqli_query($conn, $update_query)) {
             // Redirect kembali ke halaman data siswa setelah update berhasil
-            echo "<script>alert('Status siswa DITOLAK.'); window.location.href='index.php?ke=datasiswa';</script>";
+            echo "<script>alert('Data DITOLAK.'); window.location.href='index.php?ke=datasiswa';</script>";
             exit;
         } else {
             echo "Error saat mengupdate status: " . mysqli_error($conn);
